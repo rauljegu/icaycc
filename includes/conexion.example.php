@@ -1,0 +1,28 @@
+<?php 
+
+$host = "localhost"; 
+$user = "USUARIO_BD"; 
+$pass = "CONTRASENA_BD"; 
+$db   = "NOMBRE_BD"; 
+ 
+try{ 
+ 
+    $pdo = new PDO( 
+        "mysql:host=$host;dbname=$db;charset=utf8mb4", 
+        $user, 
+        $pass 
+    ); 
+ 
+    $pdo->setAttribute( 
+        PDO::ATTR_ERRMODE, 
+        PDO::ERRMODE_EXCEPTION 
+    ); 
+ 
+}catch(PDOException $e){ 
+ 
+    die( 
+        "Error de conexión: " 
+        .$e->getMessage() 
+    ); 
+ 
+}

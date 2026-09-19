@@ -1,0 +1,31 @@
+# ==========================================================
+# ICAyCC - Archivos que NO deben subirse a GitHub
+# ==========================================================
+
+# Credenciales / configuración local
+includes/conexion.php
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales
+*.tmp
+*.temp
+*.swp
+*~
+
+# Respaldos
+*.sql
+*.bak
+*.backup
+*.zip
+*.tar
+*.tar.gz
+*.gz
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
