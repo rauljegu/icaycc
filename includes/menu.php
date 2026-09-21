@@ -779,7 +779,7 @@
                        COMISIONES Y COMITÉS
                 ========================== -->
                 <li class="nav-item dropdown">
-                    <a
+                   <!-- <a
                         class="nav-link dropdown-toggle"
                         href="<?= BASE_URL ?>comisiones/"
                         id="menuComites"
@@ -788,7 +788,7 @@
                         aria-expanded="false"
                     >
                        Comisiones y Comit&eacute;s
-                    </a>
+                    </a>-->
 
                     <ul class="dropdown-menu" aria-labelledby="menuComites">
 						
