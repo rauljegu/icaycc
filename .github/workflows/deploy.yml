@@ -1,0 +1,29 @@
+
+name: Despliegue ICAyCC a Debian
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Publicar sitio en Debian
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obtener código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Desplegar archivos por SSH
+        uses: easingthemes/ssh-deploy@v5.2.0
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
+          REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
+          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
+          TARGET: ${{ secrets.DEPLOY_PATH }}
+          SOURCE: ./
+          ARGS: "-rlDzvc"
+          EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /.env"
