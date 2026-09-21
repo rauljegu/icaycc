@@ -26,4 +26,4 @@ jobs:
           TARGET: ${{ secrets.DEPLOY_PATH }}
           SOURCE: ./
           ARGS: "-rlDzvc"
-          EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /.env"
+          EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /config/config.php, /.env"
