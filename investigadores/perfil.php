@@ -48,6 +48,27 @@ $stmt->execute([$id]);
 
 $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+/* ==========================
+   GRUPOS
+   ========================== */
+
+$sql = "
+SELECT g.nombre
+FROM grupos g
+
+INNER JOIN investigador_grupo ig
+    ON ig.id_grupo = g.id_grupo
+
+WHERE ig.id_investigador = ?
+
+ORDER BY g.nombre
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$id]);
+
+$grupo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 ?>
@@ -105,6 +126,28 @@ $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach($departamentos as $dep){
 
                                 echo htmlspecialchars($dep['nombre'])."<br>";
+
+                            }
+
+                        }else{
+
+                            echo "No registrado";
+
+                        }
+
+                        ?>
+
+                    </p>
+					<p>
+                        <strong>Grupo:</strong><br>
+
+                        <?php
+
+                        if(count($grupo)>0){
+
+                            foreach($grupo as $gru){
+
+                                echo htmlspecialchars($gru['nombre'])."<br>";
 
                             }
 

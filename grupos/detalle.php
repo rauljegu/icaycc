@@ -44,20 +44,20 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $sql = "
     SELECT
-        i.id_investigador,
+        i.id_personal,
         i.nombre,
         ig.rol
 
     FROM investigador_grupo ig
 
-    INNER JOIN investigadores i
-        ON i.id_investigador = ig.id_investigador
+    INNER JOIN personal i
+        ON i.id_personal = ig.id_investigador
 
     WHERE ig.id_grupo = ?
 
     ORDER BY i.nombre
     ";
-
+//echo $sql;
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$id]);
 
@@ -72,7 +72,7 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
                 <div class="card-body">
 
                     <a
-                        href="../investigadores/perfil.php?id=<?= $inv['id_investigador']; ?>"
+                        href="../investigadores/perfil.php?id=<?= $inv['id_personal']; ?>"
                         class="text-decoration-none">
 
                         <?= htmlspecialchars($inv['nombre']); ?>

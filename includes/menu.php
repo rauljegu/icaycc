@@ -460,7 +460,7 @@
 												class="dropdown-item"
 												href="<?= BASE_URL ?>ensenanza/continua.php#recursos"
 											>
-												Recusrsos para Docentes
+												Recursos para Docentes
 											</a>
 										</li>
 
@@ -659,7 +659,7 @@
                                     <a
                                         class="dropdown-item"
                                         href="<?= BASE_URL ?>comunicacion/index.php"
-										target="_blank"
+										
                                     >
                                         Comunicaci&oacute;n
                                     </a>
@@ -765,7 +765,8 @@
 						<li>
                             <a
                                 class="dropdown-item"
-                                href="<?= BASE_URL ?>unidades/uniatmos.php"
+                                href="http://uniatmos.atmosfera.unam.mx/ACDM/"
+								target="_blank"
                             >
                                UNIATMOS
                             </a>
