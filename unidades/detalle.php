@@ -27,7 +27,7 @@ $destinos = [
 
     1 => 'unidades/instrumentacion.php',
     2 => 'unidades/computo.php',
-    3 => 'ensenanza/comunicacion.php',
+    3 => 'comunicacion/index.php',
     4 => 'ensenanza/vinculacion.php',
     5 => 'unidades/docencia.php',
     6 => 'unidades/uniatmos.php',

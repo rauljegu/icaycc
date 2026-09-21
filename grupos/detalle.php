@@ -32,7 +32,27 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <?php } ?>
 
-    <hr>
+     <hr>
+
+    <?php
+
+    $sql = "
+    SELECT COUNT(*)
+    FROM investigador_grupo
+    WHERE id_grupo=?
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$id]);
+
+    $total = $stmt->fetchColumn();
+
+    ?>
+
+    <p>
+        <strong><?= $total; ?></strong>
+        acad&eacute;micos adscritos
+    </p>
 
     <h3>
         Integrantes
