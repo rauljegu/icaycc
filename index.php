@@ -70,7 +70,7 @@ $apoyo = $pdo->query($sql);
 
     <div class="text-center mb-5">
 		 <img
-        src="/assets/img/logo_icaycc_colores.svg"
+        src="<?= BASE_URL ?>assets/img/logo_icaycc_colores.svg"
         alt="ICAyCC"
         class="img-fluid mb-4"
         style="max-height:180px;">
