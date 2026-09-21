@@ -235,7 +235,7 @@ $apoyo = $pdo->query($sql);
                         <div class="card-footer bg-white border-0">
 
                             <a
-                                href="<?= BASE_URL ?>departamentos/detalle.php?id=<?= $dep['id_departamento']; ?>"
+                                href="<?= BASE_URL ?>unidades/detalle.php?id=<?= $dep['id_unidades']; ?>"
                                 class="btn btn-icaycc w-100">
 
                                 Ver unidad

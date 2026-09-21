@@ -32,7 +32,9 @@ $destinos = [
     5 => 'unidades/docencia.php',
     6 => 'unidades/uniatmos.php',
     7 => 'unidades/laboratorios.php',
-    8 => 'ensenanza/continua.php'
+    8 => 'ensenanza/continua.php',
+    9 => 'unidades/biblioteca.php',
+    10 => 'unidades/editorial.php'
 
 ];
 
