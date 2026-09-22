@@ -82,15 +82,29 @@ $grupo = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="card shadow-sm">
 
                 <div class="card-body text-center">
+				<?php
+					$imagen = __DIR__ . '/img/'.$investigador['foto'];
 
-                    <img
+					if (file_exists($imagen)) {
+						$imagen = 'img/'.$investigador['foto'];
+					} else {
+						$imagen = BASE_URL . 'assets/img/avatar.png';
+					}
+					?>
+				<img
+					src="<?= $imagen; ?>"
+					class="img-fluid rounded-start
+						   w-100 h-100 object-fit-cover"
+					alt="<?=$investigador['foto'];?>"
+				>
+                   <!-- <img
                         src="../assets/img/avatar.png"
                         class="img-fluid rounded-circle mb-3"
                         style="width:180px;height:180px;object-fit:cover;"
-                        alt="Investigador">
+                        alt="Investigador">-->
 
                     <h3>
-                        <?= htmlspecialchars($investigador['nombre']); ?>
+                        <?= htmlspecialchars($investigador['grado_academico'].' '.$investigador['nombre']); ?>
                     </h3>
 
                 </div>
@@ -198,6 +212,127 @@ $grupo = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
     </div>
+				<div class="d-flex flex-column">
+
+				<!-- ========================= -->
+				<!-- MENÚ HORIZONTAL -->
+				<!-- ========================= -->
+
+				<div
+					class="nav nav-tabs"
+					id="nav-tab"
+					role="tablist"
+				>
+
+					<button
+						class="nav-link active boton-fondo-verde"
+						id="nav-Publicaciones-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#nav-Publicaciones"
+						type="button"
+						role="tab"
+						aria-controls="nav-Publicaciones"
+						aria-selected="true"
+					>
+						Publicaciones
+					</button>
+
+
+					<button
+						class="nav-link boton-fondo-verde"
+						id="nav-Tesis-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#nav-Tesis"
+						type="button"
+						role="tab"
+						aria-controls="nav-Tesis"
+						aria-selected="false"
+					>
+					   Tesis
+					</button>
+
+				</div>
+
+
+				<!-- ========================= -->
+				<!-- CONTENIDO DE LAS TABS -->
+				<!-- ========================= -->
+
+				<div
+					class="tab-content"
+					id="nav-tabContent"
+				>
+					<!-- ================================= -->
+					<!-- Publicaciones -->
+					<!-- ================================= -->
+
+					<div
+						class="tab-pane fade show active"
+						id="nav-Publicaciones"
+						role="tabpanel"
+						aria-labelledby="nav-Publicaciones-tab"
+						tabindex="0"
+					>
+
+						<div class="d-grid gap-4 mt-4">
+
+							<div class="card shadow-sm">
+
+								<div class="card-body card-text">
+									<div style="white-space: pre-line;">
+										<iframe 
+											id="ifr" 
+											style="background: #FFFFFF;" 
+											src="https://produccion.siia.unam.mx/Publicaciones/ProdCientif/BuscadorPublicaciones.aspx?idtercero=<?=nl2br(htmlspecialchars($investigador['siia']));?>" 
+											width="100%" height="800px" frameborder="0" scrolling="auto"></iframe>
+									</div>
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+
+					<!-- ================================= -->
+					<!-- Tesis -->
+					<!-- ================================= -->
+
+					<div
+						class="tab-pane fade  "
+						id="nav-Tesis"
+						role="tabpanel"
+						aria-labelledby="nav-Tesis-tab"
+						tabindex="0"
+					>
+
+						<div class="d-grid gap-4 mt-4">
+
+							<!-- CARD 1 -->
+							<div class="card shadow-sm">
+								<div class="card-body card-text">
+									<div style="white-space: pre-line;">
+										<iframe 
+											id="ifr" 
+											style="background: #FFFFFF;" 
+											src="https://produccion.siia.unam.mx/Publicaciones/ProdCientif/BuscadorTesis.aspx?idtercero=<?=nl2br(htmlspecialchars($investigador['siia']));?>" 
+											width="100%" height="800px" frameborder="0" scrolling="auto"></iframe>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+
+					
+				</div>
+
+			</div>
+
 
 </div>
 
