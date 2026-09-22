@@ -4,6 +4,7 @@
 
 # Credenciales / configuración local
 includes/conexion.php
+admin/includes/connect.php
 .env
 .env.*
 
