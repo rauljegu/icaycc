@@ -83,16 +83,25 @@ $grupo = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <div class="card-body text-center">
 				<?php
-					$imagen = __DIR__ . '/img/'.$investigador['foto'];
+    $foto = trim($investigador['foto'] ?? '');
 
-					if (file_exists($imagen)) {
-						$imagen = 'img/'.$investigador['foto'];
-					} else {
-						$imagen = BASE_URL . 'assets/img/avatar.png';
-					}
-					?>
+    // Imagen predeterminada
+    $imagen = BASE_URL . 'assets/img/avatar.png';
+
+    // Comprobar que exista un nombre de archivo
+    if ($foto !== '') {
+
+        // Ruta física en el servidor
+        $rutaFisica = __DIR__ . '/img/' . basename($foto);
+
+        if (is_file($rutaFisica)) {
+            // Ruta que utilizará el navegador
+            $imagen = BASE_URL . 'investigadores/img/' . rawurlencode(basename($foto));
+        }
+    }
+?>
 				<img
-					src="<?= $imagen; ?>"
+					src="<?= htmlspecialchars($imagen, ENT_QUOTES, 'UTF-8') ?>"
 					 class="img-fluid rounded-circle mb-3"
                         style="width:180px;height:180px;object-fit:cover;"
 					alt="<?=$investigador['foto'];?>"
