@@ -93,8 +93,8 @@ $grupo = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					?>
 				<img
 					src="<?= $imagen; ?>"
-					class="img-fluid rounded-start
-						   w-100 h-100 object-fit-cover"
+					 class="img-fluid rounded-circle mb-3"
+                        style="width:180px;height:180px;object-fit:cover;"
 					alt="<?=$investigador['foto'];?>"
 				>
                    <!-- <img
