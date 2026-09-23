@@ -371,7 +371,7 @@ try {
 					</div>
 				</div>
 			</div>
-			<p><P>
+			<p></p>
 		</div>
 		
 		<h3 class="text-center" >INFORMES Y ATENCI&Oacute;N</h3>
