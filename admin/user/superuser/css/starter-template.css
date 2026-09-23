@@ -1,0 +1,26 @@
+@brand-primary: darken(#428bca, 6.5%); 
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.navbar-inverse {
+    /*background-color:#003D79;*/
+    background-color:#4b56d2;
+    border-color: #393c83;
+}
+.navbar-inverse .navbar-brand {
+    color: white;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    /*color: #003D79;*/	
+    color: #FFFFFF;
+    /*background-color: #D59F0F;*/
+    background-color: #393c83;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}

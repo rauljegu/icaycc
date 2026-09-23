@@ -1,0 +1,48 @@
+ /* Asegura que el body ocupa toda la altura de la ventana */
+ :root {
+
+    --icaycc-dark: #004F5C;
+    --icaycc-medium: #008492;
+    --icaycc-green: #2C9571;
+    --icaycc-orange: #CF5415;
+
+}
+ 
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Contenido principal para ocupar el espacio disponible */
+        .content {
+            flex: 1;
+        }
+		.navbar{
+			background:var(--icaycc-dark);
+		}
+		.bg-primary{
+			background:var(--icaycc-medium) !important;
+		}
+        /* Footer siempre abajo */
+        footer {
+            background-color: var(--icaycc-dark);
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+		.modal-body {
+        max-height: 60vh; /* Ajusta el tamaño máximo del modal */
+        overflow-y: auto;  /* Agrega barra de desplazamiento si el contenido es muy grande */
+    }
+	
+	#overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+}
