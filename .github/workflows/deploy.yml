@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - name: Obtener código del repositorio
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Desplegar archivos por SSH
-        uses: easingthemes/ssh-deploy@v5.1.0
+        uses: easingthemes/ssh-deploy@v6.0.3
         env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
@@ -26,4 +26,4 @@ jobs:
           TARGET: ${{ secrets.DEPLOY_PATH }}
           SOURCE: ./
           ARGS: "-rlDzvc"
-          EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /config/config.php, /.env"
+          EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /config/config.php, /admin/includes/connect.php, /.env"
