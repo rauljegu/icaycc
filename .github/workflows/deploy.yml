@@ -9,6 +9,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository == 'mgrutter/icaycc_web'
     name: Publicar sitio en Debian
     runs-on: ubuntu-latest
 
