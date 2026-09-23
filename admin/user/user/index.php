@@ -113,7 +113,7 @@
 												<?= ($row1["grado_academico"] == "Lic.") ? "selected" : ""; ?>>
 												Licenciatura
 											</option>
-											<option value="Mtra(a)"
+											<option value="Mtro(a)."
 												<?= ($row1["grado_academico"] == "Mtro(a).") ? "selected" : ""; ?>>
 												Maestría
 											</option>
