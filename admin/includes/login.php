@@ -5,7 +5,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="author" content="RdJG_SD">
-		<title>Gaceta Salud Digital</title>
+		<title>Admin ICAyCC</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		  <link href="../assets/estilo.css" rel="stylesheet">
@@ -30,50 +30,11 @@ $login->UserType();
 		</nav>
 		<?php
 			include'../modal_inicio.php';
-			include'../modal_registro.php';
+			
 		?>
 
 		<div class="container mt-4 content" >
-			<div class="row">
-				<div class="col-md-8">
-					<br>
-					<h2 id="acerca">Acerca de la Gaceta</h2>
-					<br>
-					<h3>Órgano de divulgación del Departamento de Salud Digital</h3>
-					<p>Su objetivo principal es divulgar los avances en la Salud Digital y de la Transformación Digital en Salud a la comunidad de profesionales de atención de la salud 
-						y a todos los profesionales interesados.</p>
-					<h3 id="actual">Número más reciente</h3>
-					<table class="table table-bordered align-middle">
-					<?php 
-						include'conexion.php';
-						$sql="SELECT * FROM publicados 
-						INNER JOIN datos_gaceta ON publicados.id_publicados=datos_gaceta.id_publicados WHERE publicados.activo = 1
-						ORDER BY publicados.id_publicados DESC LIMIT 1";
-						//echo $sql;
-						$result=$conn->query($sql);
-						if($result->num_rows > 0 ){
-							while($row=$result->fetch_assoc()){
-								?>
-								<thead>
-								</thead>
-								<tbody>
-								<tr>
-									<td><a href="./user/publicados/<?php echo $row["archivo"]?>" target="_blank"><img src="../img/gaceta_azul.png" width="100em"></a></td>
-									<td>
-										<p><a class="btn btn-primary" href="./user/publicados/<?php echo $row["archivo"]?>" target="_blank">Gaceta Salud Digital</a></p>
-										<p>Vol.<?=$row["volumen"];?> Núm. <?=$row["numero"];?> (<?=$row["year"];?>)</p>
-										<p>Órgano de divulgación del Departamento de Salud Digital</p>
-									</td>
-								</tr>
-								</tbody>
-								<?php
-							}
-						
-						}
-				   ?>
-				   </table>
-				</div>
-			</div>
+			
 			<?php		
 			
 			//	header("Location: index.php?response=" . urlencode(json_encode(["status" => "success", "message" => "Registrado, en breve recibirá un correo con más información."])));

@@ -21,7 +21,7 @@ function actualizar(){
 	$scopus = limpiar($_POST["scopus"]);
 	
 	$sql="UPDATE  personal SET 
-	nombre = '$name',
+	nombres = '$name',
 	apellido_paterno = '$paterno',
 	apellido_materno = '$materno',
 	telefono = '$telefono',
