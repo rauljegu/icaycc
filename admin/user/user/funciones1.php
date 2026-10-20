@@ -83,9 +83,9 @@ function actualizar(){
 				
 
 }
-function leer(){
+function desactivar(){
 	$ub = limpiar($_GET["id"]);
-	$sql="UPDATE rechazados SET leido = 1 WHERE id_recibidos = $ub";
+	$sql="UPDATE personal SET activo = 0 WHERE id_personal = $ub";
 	 include '../../includes/connect.php';
 							$connect = $conn;
     $resultado = $conn->query($sql);
@@ -127,10 +127,62 @@ function leer(){
 
 				Toast.fire({
 					icon: 'success',
-					title: 'Leido'
+					title: 'Desactivado'
 				}).then(() => {
-        window.location.href='mensajes.php'; // Recargar la página después del toast
-    });
+					 window.location.href = window.location.pathname;
+				});
+			</script>";
+	}$conn->close;
+
+}
+function activar(){
+	$ub = limpiar($_GET["id"]);
+	$sql="UPDATE personal SET activo = 1 WHERE id_personal = $ub";
+	 include '../../includes/connect.php';
+							$connect = $conn;
+    $resultado = $conn->query($sql);
+    if(!$resultado){
+      $error = $conn->error; $e = "EXISTE UN ERROR EN: ".$error;
+	   echo "
+				<script>
+				const Toast = Swal.mixin({
+					toast: true,
+					position: 'center',
+					showConfirmButton: false,
+					timer: 500,
+					timerProgressBar: true,
+					didOpen: (toast) => {
+						toast.onmouseenter = Swal.stopTimer;
+						toast.onmouseleave = Swal.resumeTimer;
+					}
+				});
+
+				Toast.fire({
+					icon: 'warning',
+					title: '".addslashes($e)."'
+				});
+			</script>";
+    } else {
+	 echo "
+				<script>
+				const Toast = Swal.mixin({
+					toast: true,
+					position: 'center',
+					showConfirmButton: false,
+					timer: 1500,
+					timerProgressBar: true,
+					didOpen: (toast) => {
+						toast.onmouseenter = Swal.stopTimer;
+						toast.onmouseleave = Swal.resumeTimer;
+					}
+				});
+
+				Toast.fire({
+					icon: 'success',
+					title: 'Activado'
+				}).then(() => {
+					 window.location.href = window.location.pathname;
+				});
 			</script>";
 	}$conn->close;
 

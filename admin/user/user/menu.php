@@ -18,7 +18,10 @@
                         <a class="nav-link<?php echo isset($active0) ? $active0 : ''; ?>" href="index.php">Mi perfil</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link <?php echo isset($active1) ? $active1 : ''; ?>" href="registrados.php">Registrados</a>
+                        <a class="nav-link <?php echo isset($active1) ? $active1 : ''; ?>" href="secciones.php">Secciones</a>
+                    </li>
+					<li class="nav-item ">
+                        <a class="nav-link <?php echo isset($active2) ? $active2 : ''; ?>" href="personal.php">Personal</a>
                     </li>
               </ul>
                 <ul class="navbar-nav">

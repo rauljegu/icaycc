@@ -15,7 +15,9 @@ if (!isset($_SESSION['login']) || $_SESSION['role'] != "0") {
  
 switch($name){
 	case "index.php": $menu=0;   $name='index.php'; include'activo.php'; break;
-	case "enlaces.php": $menu=1;   $name='enlaces.php'; include'activo.php'; break;
+	case "secciones.php": $menu=1;   $name='secciones.php'; include'activo.php'; break;
+	case "personal.php": $menu=2;   $name='personal.php'; include'activo.php'; break;
+	case "editar_personal.php": $menu=2;   $name='editar_personal.php'; include'activo.php'; break;
 	
 	
 }
