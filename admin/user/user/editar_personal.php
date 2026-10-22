@@ -57,10 +57,10 @@
                         </div> 
 						<?php   }
 						} else { /*echo "Algo paso".$sql;*/ } ?>
-						<form id="formFoto" action="subir_foto.php" method="POST" enctype="multipart/form-data" novalidate>
+						<form id="formFoto" action="ep_subir_foto.php" method="POST" enctype="multipart/form-data" novalidate>
 							<input type="file" name="foto" id="inputFoto" accept="image/*" class="form-control mt-2" onchange="cambiarFoto()">
 							<input type="hidden" name="id_usuario" value="<?php echo $id; ?>">
-							<input type="hidden" name="mail" value="<?php echo $row['correo']; ?>">
+							<!--<input type="hidden" name="mail" value="<?php echo $row['correo']; ?>">-->
 							<button type="submit" class="btn btn-primary mt-2">Subir Foto</button>
 						</form>
 						<div id="overlay" class="d-none">
@@ -200,8 +200,8 @@
 									<!--Departamento -->
 									<div class="col-12">
 										<label for="Departamento" class="form-label">Departamento</label>
-										<select name="Departamento" id="Departamento" class="form-select" required>
-											<option value="">Seleccione un departamento</option>
+										<select name="departamento" id="Departamento" class="form-select" required>
+											<option value="0">Seleccione un departamento</option>
 											<?php
 												$sql2="SELECT id_departamento, nombre FROM departamentos WHERE id_departamento 
 												IN (SELECT id_departamento FROM investigador_departamento WHERE id_investigador = $id)";
@@ -217,7 +217,7 @@
 											<?php 	}
 												} 
 													$sql3="SELECT id_departamento, nombre FROM departamentos WHERE id_departamento 
-													NOT IN (SELECT id_departamento FROM investigador_departamento WHERE id_investigador = $id)";
+													NOT IN (SELECT id_departamento FROM investigador_departamento WHERE id_investigador = $id) ORDER BY nombre ASC";
 													include '../../includes/connect.php';
 													$connect = $conn;
 													//echo $sql2;
@@ -236,7 +236,7 @@
 									<div class="col-12">
 										<label for="Grupo" class="form-label">Grupo</label>
 										<select name="grupo" id="Grupo" class="form-select" required>
-											<option value="">Seleccione un Grupo</option>
+											<option value="0">Seleccione un Grupo</option>
 											<?php
 												$sql4="SELECT id_grupo, nombre FROM grupos WHERE id_grupo 
 												IN (SELECT id_grupo FROM investigador_grupo WHERE id_investigador = $id)";
@@ -252,7 +252,7 @@
 											<?php 	}
 												} 
 													$sql5="SELECT id_grupo, nombre FROM grupos WHERE id_grupo 
-													NOT IN (SELECT id_grupo FROM investigador_grupo WHERE id_investigador = $id)";
+													NOT IN (SELECT id_grupo FROM investigador_grupo WHERE id_investigador = $id)  ORDER BY nombre ASC";
 													include '../../includes/connect.php';
 													$connect = $conn;
 													//echo $sql5;
@@ -261,6 +261,41 @@
 														while($row5= $result5->fetch_assoc()) { ?>																										
 															<option value="<?=$row5["id_grupo"]?>">
 																<?php echo $row5["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>	
+									<!--Unidades -->
+									<div class="col-12">
+										<label for="Unidades" class="form-label">Unidades de Apoyo</label>
+										<select name="unidades" id="Unidades" class="form-select" required>
+											<option value="0">Seleccione una Unidad de Apoyo</option>
+											<?php
+												$sql6="SELECT id_unidades, nombre FROM unidades WHERE id_unidades
+												IN (SELECT id_unidades FROM personal_unidades WHERE id_personal = $id)";
+												include '../../includes/connect.php';
+												$connect = $conn;
+												//echo $sql6;
+												$result6 = $conn->query($sql6);
+												if ($result6->num_rows > 0) {
+													while($row6= $result6->fetch_assoc()) { ?>																										
+														<option value="<?=$row6["id_unidades"]?>" selected>
+															<?php echo $row6["nombre"]; ?>
+														</option>
+											<?php 	}
+												} 
+													$sql7="SELECT id_unidades, nombre FROM unidades WHERE id_unidades 
+													NOT IN (SELECT id_unidades FROM personal_unidades WHERE id_personal = $id) ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql7;
+														$result7 = $conn->query($sql7);
+													if ($result7->num_rows > 0) {
+														while($row7= $result7->fetch_assoc()) { ?>																										
+															<option value="<?=$row7["id_unidades"]?>">
+																<?php echo $row7["nombre"]; ?>
 															</option>
 										<?php			} 
 													} 
@@ -325,4 +360,46 @@
 
 </body>
 </html>
+<script>
+      document.getElementById("formFoto").addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    let formData = new FormData(this);
+	fetch("ep_subir_foto.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            Swal.fire({
+                title: "Éxito",
+                text: data.mensaje,
+                icon: "success",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                location.reload(); // 👈 recarga aquí
+            });
+        } else {
+            Swal.fire("Error", data.mensaje, "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire("Error", "Hubo un problema al subir la foto.", "error");
+    });
+});
 
+function cambiarFoto() {
+    const input = document.getElementById('inputFoto');
+    const img = document.getElementById('fotoPerfil');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+    </script>

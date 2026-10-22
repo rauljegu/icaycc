@@ -241,4 +241,47 @@
 
 </body>
 </html>
+<script>
+      document.getElementById("formFoto").addEventListener("submit", function (e) {
+    e.preventDefault();
+    
+    let formData = new FormData(this);
+	fetch("subir_foto.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            Swal.fire({
+                title: "Éxito",
+                text: data.mensaje,
+                icon: "success",
+                confirmButtonText: "Aceptar"
+            }).then(() => {
+                location.reload(); // 👈 recarga aquí
+            });
+        } else {
+            Swal.fire("Error", data.mensaje, "error");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        Swal.fire("Error", "Hubo un problema al subir la foto.", "error");
+    });
+});
+
+function cambiarFoto() {
+    const input = document.getElementById('inputFoto');
+    const img = document.getElementById('fotoPerfil');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+    </script>
 
