@@ -1,0 +1,58 @@
+:root {
+            --icaycc-dark: #004F5C;
+            --icaycc-medium: #008492;
+            --icaycc-green: #2C9571;
+            --icaycc-orange: #CF5415;
+            --icaycc-light: #F3F7F6;
+            --icaycc-text: #25383B;
+        }
+        html { scroll-behavior: smooth; }
+        body { color: var(--icaycc-text); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+        a { text-decoration: none; }
+        .topbar { background: var(--icaycc-dark); color: #fff; font-size: .84rem; }
+       /* .navbar { background: #fff; }*/
+        .brand-mark {
+            width: 48px; height: 48px; display: grid; place-items: center;
+            background: var(--icaycc-dark); color: #fff; border-radius: 50%;
+            font-size: 1.4rem; flex-shrink: 0;
+        }
+        .brand-title { color: var(--icaycc-dark); font-weight: 750; line-height: 1.15; }
+        .brand-subtitle { font-size: .78rem; color: #53686B; }
+       /* .navbar .nav-link { color: var(--icaycc-dark); font-weight: 600; }
+        .navbar .nav-link:hover, .navbar .nav-link:focus { color: var(--icaycc-medium); }*/
+        .hero-banner { background: #dce8e7; overflow: hidden; }
+        .hero-banner img { display: block; width: 100%; height: clamp(150px, 25vw, 300px); object-fit: cover; object-position: center; }
+        .hero-caption { background: linear-gradient(90deg, var(--icaycc-dark), #006875); color: #fff; }
+        .section { padding: 3.75rem 0; }
+        .section-soft { background: var(--icaycc-light); }
+        .section-kicker { color: var(--icaycc-green); text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 800; }
+        .section-title { color: var(--icaycc-dark); font-weight: 750; }
+        .section-intro { max-width: 720px; color: #5B6C6F; }
+        .content-card { height: 100%; border: 1px solid #e1e9e8; border-radius: 1rem; overflow: hidden; background: #fff; transition: transform .2s ease, box-shadow .2s ease; }
+        .content-card:hover { transform: translateY(-4px); box-shadow: 0 1rem 2rem rgba(0,79,92,.10); }
+        .card-symbol { height: 128px; display: grid; place-items: center; background: linear-gradient(135deg, #e8f1ef, #d4e7e4); color: var(--icaycc-dark); font-size: 2.5rem; }
+        .category { color: var(--icaycc-green); text-transform: uppercase; font-size: .72rem; font-weight: 800; letter-spacing: .07em; }
+        .card-title { color: var(--icaycc-dark); font-weight: 700; }
+        .text-link { color: var(--icaycc-medium); font-weight: 700; }
+        .text-link:hover { color: var(--icaycc-dark); }
+        .event-date { min-width: 76px; padding: .8rem .5rem; background: var(--icaycc-dark); color: #fff; border-radius: .75rem; text-align: center; }
+        .event-date strong { display: block; font-size: 1rem; }
+        .event-item { display: flex; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid #dce6e4; }
+        .forecast-card { height: 100%; border-radius: 1rem; padding: 1.5rem; color: #fff; background: var(--icaycc-dark); }
+        .forecast-card:nth-child(2) { background: var(--icaycc-medium); }
+        .forecast-card:nth-child(3) { background: #246E5B; }
+        .forecast-icon { font-size: 2rem; opacity: .95; }
+        .forecast-card p { color: rgba(255,255,255,.85); }
+        .btn-institutional { background: var(--icaycc-orange); color: #fff; border: 0; font-weight: 700; }
+        .btn-institutional:hover { background: #a94310; color: #fff; }
+        .btn-outline-institutional { color: var(--icaycc-dark); border: 1px solid var(--icaycc-dark); font-weight: 700; }
+        .btn-outline-institutional:hover { color: #fff; background: var(--icaycc-dark); }
+        footer { background: var(--icaycc-dark); color: #fff; }
+        footer a { color: #e3f2ef; }
+        footer a:hover { color: #fff; text-decoration: underline; }
+        .footer-rule { border-color: rgba(255,255,255,.22); }
+        @media (max-width: 575.98px) {
+            .section { padding: 2.5rem 0; }
+            .hero-caption h1 { font-size: 1.25rem; }
+            .brand-subtitle { max-width: 245px; }
+        }

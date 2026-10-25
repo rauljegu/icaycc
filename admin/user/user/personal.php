@@ -128,57 +128,202 @@
 							
 							<div class="collapse" id="collapseExample0">
 								<div class="card card-body">
-									<form id="registroForm"  action="<?php echo htmlspecialchars("registro.php"); ?>" method="POST" autocomplete="off">		 
-										<h2>Añade Usuario</h2>					 
-										<div class="col-md-12">
-											<div class="input-group mb-3">
-												<span class="input-group-text">Nombres:</span>
-												<input type="text" class="form-control" id="nombre" name="nombre">
-											</div> 
-											<div class="input-group mb-3">
-												<span class="input-group-text">Primer Apellido:</span>
-												<input type="text" class="form-control" id="paterno" name="paterno">
-											</div> 
-											<div class="input-group mb-3">
-												<span class="input-group-text">Segundo Apellido:</span>
-												<input type="text" class="form-control" id="materno" name="materno">
+								
+
+						<form id="registroForm" class="row g-3" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']."?eq=3"); ?>">
+						
+								<h3 class="mt-3">Nombre: <?=$row1["nombres"]." ".$row1["apellido_paterno"]." ".$row1["apellido_materno"];?></h3>
+								    <div class="input-group mb-3">
+										<span class="input-group-text">Nombre(s) Apellidos</span>
+										<input type="text" class="form-control" name="name"  required>
+										<input type="text" class="form-control" name="paterno"  required>
+										<input type="text" class="form-control" name="materno">
+										<div class="invalid-feedback">Todos los campos de nombre y apellidos son obligatorios.</div>
+									</div>
+
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="basic-addon1">Correo/usuario @</span>
+										<input type="email" class="form-control" placeholder="user@server.com" aria-label="Username"
+											aria-describedby="basic-addon1" name="correo" 
+											 pattern="[a-zA-Z0-9._%+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+										<div class="invalid-feedback">Ingrese un correo válido.</div>
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="basic-addon1">Tel&eacute;fono:</span>
+										<input type="telefono" class="form-control" placeholder="5512344567" aria-label="telefono"
+											aria-describedby="basic-addon1" name="telefono"
+											  required>										
+									</div>
+									<div class="input-group mb-3">
+										<span class="input-group-text" id="basic-addon1">Extensi&oacute;n:</span>
+										<input type="telefono" class="form-control" placeholder="01234" aria-label="telefono"
+											aria-describedby="basic-addon1" name="extension"
+											  required>										
+									</div>
+									
+									
+									<!-- Grado académico -->
+									<div class="col-12">
+										<label for="grado" class="form-label">Grado académico</label>
+										<select name="grado" id="grado" class="form-select" required>
+											<option value="">Seleccione un grado académico</option>
+											<option value="Lic.">
+												Licenciatura
+											</option>
+											<option value="Mtro(a).">
+												Maestría
+											</option>
+											<option value="Dr(a).">
+												Doctorado
+											</option>
+											<option value="Sin estudios profesionales">
+												Sin estudios profesionales
+											</option>
+										</select>
+									</div>
+
+									<!-- Perfiles académicos -->
+									<div class="col-12">
+										<div class="row g-3">
+
+											<!-- Google Scholar -->
+											<div class="col-12 col-md-6 col-xl-3">
+												<label for="scholar" class="form-label">Google Scholar</label>
+												<input type="text"
+													   name="scholar"
+													   id="scholar"
+													   class="form-control"
+													   placeholder="Google Scholar"
+													  >
 											</div>
-											<div class="input-group mb-3">
-												<span class="input-group-text">Correo de contacto:</span>
-												<input type="email" class="form-control" id="correo" name="correo" required>
+											
+											<!-- ID SIIA -->
+											<div class="col-12 col-md-6 col-xl-3">
+												<label for="scholar" class="form-label">ID SIIA</label>
+												<input type="text"
+													   name="siia"
+													   id="siia"
+													   class="form-control"
+													   placeholder="ID SIIA"
+													   >
 											</div>
-											<div class="input-group mb-3">
-												<span class="input-group-text" hidden>Contraseña:</span>
-												<input type="password" class="form-control" id="pass" name="pass" autocomplete="new-password" value="Abc/1234"  required readonly hidden>
-											</div>  
-											<label for="rol" class="form-label">Roles</label>
-											<div class="input-group mb-3">
-												<select class="form-select" id="rol" name="rol" aria-label="rol">
-													<option selected>Selecciona un rol</option>
-													<?php// include'conexion.php';
-														$rol="SELECT * FROM roles WHERE tipo =  2 OR tipo =  3 OR tipo =  5 ";
-														//echo $rol;
-														$resultrol = $conn->query($rol);
-														if($resultrol->num_rows > 0) {
-															$optionrol="";
-																while ($rowrol = $resultrol->fetch_assoc()){
-																		$optionrol .= " <option value=".$rowrol["tipo"].">".$rowrol["rol"]."</option>";
-																}
-														}	
-													echo $optionrol;
-													?>
-												</select>
+
+											<!-- ResearchGate -->
+											<div class="col-12 col-md-6 col-xl-3">
+												<label for="researchgate" class="form-label">ResearchGate</label>
+												<input type="text"
+													   name="researchgate"
+													   id="researchgate"
+													   class="form-control"
+													   placeholder="ResearchGate"
+													  >
 											</div>
-											<div class="input-group mb-3">
-												<input  type="submit" class="form-control btn btn-primary" value="Añadir">
-											</div>									
-										</div> 									
-									</form>
+
+											<!-- ORCID -->
+											<div class="col-12 col-md-6 col-xl-3">
+												<label for="orcid" class="form-label">ORCID</label>
+												<input type="text"
+													   name="orcid"
+													   id="orcid"
+													   class="form-control"
+													   placeholder="ORCID"
+													  >
+											</div>
+
+											<!-- Scopus -->
+											<div class="col-12 col-md-6 col-xl-3">
+												<label for="scopus" class="form-label">Scopus</label>
+												<input type="text"
+													   name="scopus"
+													   id="scopus"
+													   class="form-control"
+													   placeholder="Scopus"
+													   >
+											</div>
+
+										</div>
+									</div>
+									
+									<div class="col-12">
+											<span class="input-group-text">Semblanza</span>
+											<textarea name="semblanza" class="form-control" placeholder="Rese&ntilde;a"></textarea>
+									</div>
+									<!--Departamento -->
+									<div class="col-12">
+										<label for="Departamento" class="form-label">Departamento</label>
+										<select name="departamento" id="Departamento" class="form-select" required>
+											<option value="0">Seleccione un departamento</option>
+											
+											<?php 	 
+													$sql3="SELECT id_departamento, nombre FROM departamentos  ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql2;
+														$result3 = $conn->query($sql3);
+													if ($result3->num_rows > 0) {
+														while($row3= $result3->fetch_assoc()) { ?>																										
+															<option value="<?=$row3["id_departamento"]?>">
+																<?php echo $row3["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
+									<!--Grupo -->
+									<div class="col-12">
+										<label for="Grupo" class="form-label">Grupo</label>
+										<select name="grupo" id="Grupo" class="form-select" required>
+											<option value="0">Seleccione un Grupo</option>
+											
+											<?php 
+													$sql5="SELECT id_grupo, nombre FROM grupos  ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql5;
+														$result5 = $conn->query($sql5);
+													if ($result5->num_rows > 0) {
+														while($row5= $result5->fetch_assoc()) { ?>																										
+															<option value="<?=$row5["id_grupo"]?>">
+																<?php echo $row5["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>	
+									<!--Unidades -->
+									<div class="col-12">
+										<label for="Unidades" class="form-label">Unidades de Apoyo</label>
+										<select name="unidades" id="Unidades" class="form-select" required>
+											<option value="0">Seleccione una Unidad de Apoyo</option>
+											
+											<?php 	
+													$sql7="SELECT id_unidades, nombre FROM unidades  ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql7;
+														$result7 = $conn->query($sql7);
+													if ($result7->num_rows > 0) {
+														while($row7= $result7->fetch_assoc()) { ?>																										
+															<option value="<?=$row7["id_unidades"]?>">
+																<?php echo $row7["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
+
+						
+						<input type="submit" class="btn btn-primary"value="Actualizar">
+						</form>
+						<br>
 								</div>
 							</div>					
 							<br>
 						
-								<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample100" aria-expanded="false" aria-controls="collapseExample">
+							<!--	<button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample100" aria-expanded="false" aria-controls="collapseExample">
 									Ver Revisores
 								</button>					
 								<div class="collapse" id="collapseExample100">
@@ -186,7 +331,7 @@
 									<div class="table-responsive-xxl">
 									</div>
 									</div>
-								</div>							
+								</div>	-->						
 							</div>
 						</div>
 					</div>

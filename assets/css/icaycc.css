@@ -71,6 +71,142 @@ body {
     top: 0;
     left: 100%;
 }
+
+/* =========================================
+   BANNER INSTITUCIONAL ICAyCC
+========================================= */
+
+.hero-header {
+    display: flex;
+    width: 100%;
+    min-height: 126px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.hero-logos {
+    flex: 0 0 32.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 14px 22px;
+    background: #fff;
+}
+
+.hero-logos a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-unam {
+    display: block;
+    width: 72px;
+    height: 82px;
+    object-fit: contain;
+	  filter: brightness(0) saturate(100%);
+}
+
+.logo-icaycc {
+    display: block;
+    width: 245px;
+    max-width: 100%;
+    height: auto;
+}
+
+.hero-banner {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.hero-banner img {
+    display: block;
+    width: 100%;
+    height: 126px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Adaptación a móviles */
+@media (max-width: 768px) {
+    .hero-header {
+        flex-direction: column;
+    }
+
+    .hero-logos {
+        flex: 0 0 auto;
+        min-height: 100px;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .logo-unam {
+        width: 52px;
+        height: 60px;
+    }
+
+    .logo-icaycc {
+        width: 220px;
+    }
+
+    .hero-banner img {
+        height: auto;
+        min-height: 90px;
+        max-height: 150px;
+    }
+}
+
+/* =========================================
+   BARRA DE NAVEGACIÓN INSTITUCIONAL
+========================================= */
+
+.navbar-icaycc {
+    background-color: #004F5C;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.navbar-icaycc .navbar-nav {
+    align-items: center;
+    gap: 4px;
+}
+
+.navbar-icaycc .nav-link {
+    color: #fff;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 8px 10px;
+}
+
+.navbar-icaycc .nav-link:hover,
+.navbar-icaycc .nav-link:focus {
+    color: #BDE4D7;
+}
+
+.navbar-social a {
+    color: #fff;
+    font-size: 19px;
+    text-decoration: none;
+}
+
+.navbar-social a:hover {
+    color: #BDE4D7;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-icaycc .navbar-nav {
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .navbar-social {
+        padding: 12px 10px;
+        justify-content: flex-start;
+    }
+}
+
 /* =========================================
    CARDS
 ========================================= */
