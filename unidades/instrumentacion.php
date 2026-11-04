@@ -218,20 +218,56 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
 			<!-- FUERA DEL COMPONENTE TABS -->
 			<!-- ========================= -->
 
-			<div class="mt-5" id="servicios">
+			<!--<div class="mt-5" id="servicios">
 
-				<?php
+				<?php/*
 				mostrarSliderRevolution(
 					'https://www.atmosfera.unam.mx/secretaria-academica/vinculacion/',
 					'Laboratorios'
-				);
+				);*/>
 				?>
 
-			</div>
+			</div>-->
 
 		</div>
 		
 
+		<!-- RUOA -->
+        <div class="col-12 col-md-4">
+			<a href="https://ruoa.unam.mx/" target="_blank">	
+				<div class="card shadow-sm h-100">				
+					<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">					
+						<h2 class="card-title">RUOA</h2>
+						<p> Red Universitaria de Observatorios Atmosf&eacute;ricos </p>                  
+					</div>					
+				</div>
+			</a>	
+		</div>
+
+
+        <!-- PEMBU -->
+       <div class="col-12 col-md-4">
+		   <a href="https://pembu.atmosfera.unam.mx/" target="_blank">	
+				<div class="card shadow-sm h-100">					
+					<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-medium">					
+					   <h2 class="card-title">PEMBU</h2>
+					   <p>Programa de Estaciones Meteorol&oacute;gicas del Bachillerato Universitario</p>
+					</div>						
+				</div>
+			</a>	
+        </div>
+			 <!-- REMA  -->
+        <div class="col-12 col-md-4">
+			<a href="https://rema.atmosfera.unam.mx/ " target="_blank">	
+				<div class="card shadow-sm h-100">				
+						<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
+							<h2 class="card-title">REMA</h2>
+							<p>Red Mexicana de Aerobiolog&iacute;a </p>
+						</div>				
+				</div>
+			</a>	
+		</div>
+		
 		<!-- PRESENTACION 2 -->
         <div class="col-12 col-md-4">
 			<div class="card shadow-sm h-100">

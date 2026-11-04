@@ -213,26 +213,12 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
 
 			</div>
 
-			<!-- ========================= -->
-			<!-- SLIDER LABORATORIOS -->
-			<!-- FUERA DEL COMPONENTE TABS -->
-			<!-- ========================= -->
-
-			<div class="mt-5" id="servicios">
-
-				<?php
-				mostrarSliderRevolution(
-					'https://www.atmosfera.unam.mx/secretaria-academica/vinculacion/',
-					'Laboratorios'
-				);
-				?>
-
-			</div>
+			
 
 		</div>
 		
 
-		<!-- PRESENTACION 2 -->
+		<!-- PRESENTACION 2
         <div class="col-12 col-md-4">
 			<div class="card shadow-sm h-100">
 				<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-medium">
@@ -243,40 +229,17 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
 					</a>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 
-        <!-- PRESENTACION 3 -->
-       <div class="col-12 col-md-4">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
-					<h2 class="card-title"><i class="bi bi-telephone"></i></h2>
-                    Tel. <?= htmlspecialchars($unidad['telefono']); ?><br>
-					Ext.   <p> <?= htmlspecialchars($unidad['extension']); ?></p>
-					Laboratorio: 5556224076
-                </div>
-            </div>
-        </div>
-			 <!-- PRESENTACION 1 -->
-        <div class="col-12 col-md-4">
-			<div class="card shadow-sm h-100">
-				<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-medium">
-
-					<h2 class="card-title">
-						<i class="bi bi-geo-alt"></i>
-					</h2>
-
-					<p>Circuito Exterior s/n, Coyoacan, Ciudad Universitaria, 04510 Ciudad de México, CDMX.</p>
-
-				</div>
-			</div>
-		</div>
+      
+	
 
 		<!-------------------------------------------------
 		--
 		-- 						ENLACES                  --
 		-------------------------------------------------->
-		<!-- PRESENTACION 2 -->
+		<!-- PRESENTACION 2 
         <div class="col-12 col-md-6">
 			<div class="card shadow-sm h-100">
 				<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
@@ -291,24 +254,10 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
                    
 				</div>
 			</div>
-		</div>
+		</div>-->
 
 
-        <!-- PRESENTACION 3 -->
-       <div class="col-12 col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
-					<a
-							href="https://tlaloc.atmosfera.unam.mx/cca-ucar/derechosautor/derechoAutor/"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="btn btn-primary boton-fondo-verde"
-						>
-							REGISTRO DE DERECHOS DE AUTOR
-											</a>
-                </div>
-            </div>
-        </div>
+       
 			
       
 	

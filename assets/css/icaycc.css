@@ -365,6 +365,44 @@ body {
     max-height: 180px;
 }
 
+/* =====================================
+   DEPARTAMENTOS
+===================================== */
+
+.departamentos-esquema {
+    width: 100%;
+    text-align: center;
+}
+
+.departamentos-esquema img {
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.departamento-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    transition: transform .25s ease,
+                box-shadow .25s ease;
+}
+
+.departamento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,.10) !important;
+}
+
+.departamento-card .card-title {
+    color: var(--icaycc-dark);
+    font-weight: 600;
+    min-height: 3rem;
+}
+
+.departamento-card .card-body {
+    padding: 1.5rem;
+}
+
 
 /* =========================================
    FOOTER ICAyCC

@@ -17,6 +17,7 @@ require_once __DIR__ . '/../config/config.php';
     $sql = "
     SELECT
         g.id_grupo,
+		g.sitio,
         g.nombre,
         COUNT(ig.id_investigador) AS integrantes
     FROM grupos g
@@ -59,7 +60,8 @@ require_once __DIR__ . '/../config/config.php';
                 </div>
 
                 <div class="card-footer bg-white border-0">
-
+					<?php 
+						if($grupo["sitio"] == ""){ ?>
                     <a
                         href="detalle.php?id=<?= $grupo['id_grupo']; ?>"
                         class="btn btn-icaycc w-100">
@@ -67,6 +69,15 @@ require_once __DIR__ . '/../config/config.php';
                         Ver grupo
 
                     </a>
+				<?php } else  {?>
+					<a
+                        href="<?= $grupo['sitio']; ?>"
+                        class="btn btn-icaycc w-100" target="_blank">
+
+                        Ver grupo
+
+                    </a>
+				<?php } ?>
 
                 </div>
 

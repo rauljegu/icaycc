@@ -75,13 +75,14 @@
 
                 <!-- DEPARTAMENTOS: tres opciones directas -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>departamentos/" id="menuDepartamentos" role="button" data-bs-toggle="dropdown" aria-expanded="false">Departamentos</a>
+                    <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>departamentos/" id="menuDepartamentos" role="button" data-bs-toggle="dropdown" aria-expanded="false">Investigaci&oacute;n</a>
                     <ul class="dropdown-menu" aria-labelledby="menuDepartamentos">
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>departamentos/">Departamentos</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>grupos/">Grupos</a></li>
                         <li class="dropdown-submenu">
                             <button type="button" class="dropdown-item dropdown-submenu-toggle" aria-expanded="false" aria-haspopup="true"><span>Unidades de Apoyo</span></button>
                             <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>unidades/">Unidades de Apoyo</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>unidades/instrumentacion.php">Instrumentaci&oacute;n y Observaci&oacute;n Atmosf&eacute;rica</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>unidades/computo.php">C&oacute;mputo y Superc&oacute;mputo</a></li>
                                 <!-- TODO: confirmar la ruta definitiva del Repositorio Institucional -->
@@ -140,7 +141,7 @@
                     <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>ensenanza/vinculacion.php" id="menuVinculacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vinculaci&oacute;n</a>
                     <ul class="dropdown-menu" aria-labelledby="menuVinculacion">
                         <!-- TODO: confirmar URL de LaNCAC -->
-                        <li><a class="dropdown-item" href="#">LaNCAC</a></li>
+                        <li><a class="dropdown-item" href="https://lancac.uacj.mx/">LaNCAC</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>ensenanza/continua.php#oferta">Oferta Educaci&oacute;n Continua</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>ensenanza/convenios.php">Convenios de Colaboraci&oacute;n</a></li>
                         <li><a class="dropdown-item" href="https://tlaloc.atmosfera.unam.mx/icaycc-ucar/derechosautor/derechoAutor/" target="_blank" rel="noopener noreferrer">Registro de Derechos de Autor</a></li>

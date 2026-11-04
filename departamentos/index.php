@@ -1,29 +1,14 @@
+
 <?php
 require_once __DIR__ . '/../config/config.php';
-/*require_once($enlace.'includes/conexion.php');
 
-include($enlace.'includes/header.php');
-include($enlace.'includes/menu.php');
-*/
-?>
-
-<div class="container py-5">
-
-    <h1 class="mb-4">
-        Departamentos de Investigaci&oacute;n
-    </h1>
-
-    <div class="row">
-
-    <?php
-
-    $sql = "
+$sql = "
     SELECT
         d.id_departamento,
         d.nombre,
         d.tipo,
         p.nombre AS responsable,
-        COUNT(id.id_investigador) AS total
+        COUNT(DISTINCT id.id_investigador) AS total
 
     FROM departamentos d
 
@@ -42,57 +27,88 @@ include($enlace.'includes/menu.php');
     ORDER BY
         d.tipo,
         d.nombre
-    ";
- //echo $sql;
-    $stmt = $pdo->query($sql);
+";
 
-    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+$stmt = $pdo->query($sql);
+?>
 
-    ?>
+<div class="container py-5">
 
-        <div class="col-md-4 mb-4">
+    <!-- TÍTULO -->
+    <h1 class="mb-4">
+        Departamentos de Investigación
+    </h1>
 
-            <div class="card shadow-sm h-100">
+    <!-- IMAGEN INTRODUCTORIA -->
+    <section class="departamentos-esquema mb-5">
 
-                <div class="card-body">
+        <img
+            src="<?= rtrim(BASE_URL, '/') ?>/assets/img/departamentos.png"
+            alt="Esquema de los departamentos, grupos y unidades del ICAyCC"
+            class="img-fluid d-block mx-auto"
+        >
 
-                    <span class="badge bg-secondary mb-2">
-                        <?= ucfirst($row['tipo']); ?>
-                    </span>
+    </section>
 
-                    <h5 class="card-title">
-                        <?= htmlspecialchars($row['nombre']); ?>
-                    </h5>
+    <!-- TARJETAS DE DEPARTAMENTOS -->
+    <section class="departamentos-listado">
 
-                    <?php if(!empty($row['responsable'])){ ?>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
 
-                        <p class="small text-muted mb-2">
-                            <strong>Responsable:</strong><br>
-                            <?= htmlspecialchars($row['responsable']); ?>
-                        </p>
+            <?php while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ ?>
 
-                    <?php } ?>
+                <div class="col">
 
-                    <p>
-                        <strong><?= $row['total']; ?></strong>
-                        integrantes registrados
-                    </p>
+                    <div class="card shadow-sm h-100 departamento-card">
 
-                    <a
-                        href="detalle.php?id=<?= $row['id_departamento']; ?>"
-                        class="btn btn-icaycc">
-                        Ver información
-                    </a>
+                        <div class="card-body d-flex flex-column">
+
+                            <span class="badge bg-secondary mb-3 align-self-start">
+                                <?= htmlspecialchars(ucfirst($row['tipo'])); ?>
+                            </span>
+
+                            <h5 class="card-title">
+                                <?= htmlspecialchars($row['nombre']); ?>
+                            </h5>
+
+                            <?php if(!empty($row['responsable'])){ ?>
+
+                                <p class="small text-muted mb-3">
+                                    <strong>Responsable:</strong><br>
+                                    <?= htmlspecialchars($row['responsable']); ?>
+                                </p>
+
+                            <?php } ?>
+
+                            <p class="mb-3">
+                                <strong>
+                                    <?= (int)$row['total']; ?>
+                                </strong>
+                                integrantes registrados
+                            </p>
+
+                            <div class="mt-auto">
+
+                                <a
+                                    href="detalle.php?id=<?= (int)$row['id_departamento']; ?>"
+                                    class="btn btn-icaycc w-100"
+                                >
+                                    Ver información
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-            </div>
+            <?php } ?>
 
         </div>
 
-    <?php } ?>
-
-    </div>
+    </section>
 
 </div>
 
