@@ -28,4 +28,4 @@ jobs:
           SOURCE: ./
           ARGS: "-rlDzvc --delete"
           EXCLUDE: "/.git/, /.github/, /includes/conexion.php, /config/config.php, /admin/includes/connect.php, /wp_content/,/wp-content/, /.env"
-          ARGS: "-rlDzvc --delete"
+         
