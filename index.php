@@ -151,34 +151,6 @@ $actualidad = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
 
-       <!-- <section id="actualidad" class="section">
-            <div class="container">
-                <div class="mb-4 mb-lg-5">
-                    <div class="section-kicker mb-2">Mantente al día</div>
-                    <h2 class="section-title display-6 mb-2">Convocatorias, noticias y cursos</h2>
-                    <p class="section-intro mb-0">Un espacio para destacar la información más relevante de la comunidad del Instituto.</p>
-                </div>
-                <div class="row g-4">
-                    <?php foreach ($convocatorias as $item): ?>
-                        <div class="col-md-4">
-                            <article class="content-card">
-                                <div class="card-symbol" aria-hidden="true">
-                                    <?php if ($item['categoria'] === 'Convocatoria'): ?><i class="bi bi-megaphone"></i>
-                                    <?php elseif ($item['categoria'] === 'Noticias'): ?><i class="bi bi-newspaper"></i>
-                                    <?php else: ?><i class="bi bi-mortarboard"></i><?php endif; ?>
-                                </div>
-                                <div class="p-4">
-                                    <div class="category mb-2"><?= e($item['categoria']) ?></div>
-                                    <h3 class="h5 card-title"><?= e($item['titulo']) ?></h3>
-                                    <p class="text-secondary small"><?= e($item['fecha']) ?></p>
-                                    <a class="text-link" href="<?= e($item['url']) ?>">Consultar información <i class="bi bi-arrow-right"></i></a>
-                                </div>
-                            </article>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </section>-->
 		<section id="actualidad" class="section">
 			<div class="container">
 
@@ -278,52 +250,6 @@ $actualidad = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 			</div>
 		</section>
 
-        <!--<section id="eventos" class="section section-soft">
-            <div class="container">
-                <div class="row g-5">
-                    <div class="col-lg-7">
-                        <div class="section-kicker mb-2">Agenda del Instituto</div>
-                        <h2 class="section-title display-6 mb-2">Próximos eventos</h2>
-                        <p class="section-intro">Seminarios, conferencias, cursos y actividades académicas.</p>
-                        <?php foreach ($eventos as $evento): ?>
-                            <article class="event-item">
-                                <div class="event-date"><strong><?= e($evento['dia']) ?></strong><span class="small"><?= e($evento['mes']) ?></span></div>
-                                <div>
-                                    <h3 class="h5 card-title mb-1"><?= e($evento['titulo']) ?></h3>
-                                    <p class="text-secondary mb-0"><?= e($evento['detalle']) ?></p>
-                                </div>
-                            </article>
-                        <?php endforeach; ?>
-                        <a class="btn btn-outline-institutional mt-4" href="#contacto">Consultar agenda completa</a>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="p-4 p-lg-5 bg-white rounded-4 shadow-sm h-100">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <div>
-                                    <div class="section-kicker mb-1">Organiza tu visita</div>
-                                    <h3 class="h4 section-title mb-0">Calendario</h3>
-                                </div>
-                                <i class="bi bi-calendar3 fs-2" style="color:var(--icaycc-medium)" aria-hidden="true"></i>
-                            </div>
-                            <p class="text-secondary">Aquí se puede integrar un calendario mensual con los eventos registrados en el sitio.</p>
-                            <div class="rounded-3 p-3" style="background:var(--icaycc-light)">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <span class="fw-bold" style="color:var(--icaycc-dark)">Agenda ICAyCC</span>
-                                    <i class="bi bi-calendar-event" style="color:var(--icaycc-medium)"></i>
-                                </div>
-                                <div class="row row-cols-7 g-1 text-center small text-secondary">
-                                    <?php foreach (['L','M','M','J','V','S','D'] as $dia): ?><div class="col py-1 fw-bold"><?= e($dia) ?></div><?php endforeach; ?>
-                                    <?php for ($d = 1; $d <= 31; $d++): ?>
-                                        <div class="col py-1"><span class="d-inline-block rounded-circle <?= in_array($d, [5,12,19,26]) ? 'text-white' : '' ?>" style="<?= in_array($d, [5,12,19,26]) ? 'background:var(--icaycc-medium);width:28px;height:28px;line-height:28px;' : 'line-height:28px;' ?>"><?= $d ?></span></div>
-                                    <?php endfor; ?>
-                                </div>
-                            </div>
-                            <p class="small text-secondary mt-3 mb-0">Calendario ilustrativo; no representa fechas reales de eventos.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>-->
 		<?php include __DIR__ . '/includes/agenda_vista.php'; ?>
         <section id="pronosticos" class="section">
             <div class="container">

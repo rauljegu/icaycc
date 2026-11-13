@@ -13,8 +13,10 @@
               <div class="flex-grow-1">
                 <h3 class="h5 card-title mb-1"><?= e($evento['titulo']) ?></h3>
                 <p class="text-secondary mb-1"><?= e($evento['detalle']) ?></p>
+				<a href="<?= BASE_URL ?>comunicacion/evento.php?id=<?= e($evento['id']) ?>" target="_blank" rel="noopener noreferrer" class="small">Consultar información <i class="bi bi-box-arrow-up-right"></i></a>
                 <?php if (!empty($evento['enlace'])): ?>
-                  <a href="<?= e($evento['enlace']) ?>" target="_blank" rel="noopener noreferrer" class="small">Consultar información <i class="bi bi-box-arrow-up-right"></i></a>
+                  <!--<a href="<?= e($evento['enlace']) ?>" target="_blank" rel="noopener noreferrer" class="small">Consultar información <i class="bi bi-box-arrow-up-right"></i></a>-->
+              
                 <?php endif; ?>
               </div>
             </article>
@@ -22,7 +24,7 @@
         <?php else: ?>
           <div class="alert alert-light border">Por el momento no hay eventos próximos programados.</div>
         <?php endif; ?>
-        <a class="btn btn-outline-institutional mt-4" href="#agenda-calendario">Consultar agenda completa</a>
+        <a class="btn btn-outline-institutional mt-4" href="<?= BASE_URL ?>comunicacion/eventos.php">Consultar agenda completa</a>
       </div>
 
       <div class="col-lg-5" id="agenda-calendario">
