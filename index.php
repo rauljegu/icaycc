@@ -73,20 +73,40 @@ $convocatorias = [
     ['categoria' => 'Cursos', 'titulo' => 'Cursos y actividades académicas', 'fecha' => 'Consulta la oferta disponible', 'url' => '#'],
 ];
 
-$eventos = [
+/*$eventos = [
     ['dia' => 'Próximo', 'mes' => 'EVENTO', 'titulo' => 'Actividad académica del Instituto', 'detalle' => 'Fecha, horario y sede por confirmar.'],
     ['dia' => 'Agenda', 'mes' => 'ICAyCC', 'titulo' => 'Seminarios y conferencias', 'detalle' => 'Consulta próximamente los detalles de cada actividad.'],
-];
+];*/
 
 $noticias = [
-    ['tipo' => 'NOTICIAS', 'titulo' => 'Noticias recientes del Instituto', 'resumen' => 'Espacio para destacar la actualidad y las actividades del ICAyCC.'],
-    ['tipo' => 'ARTÍCULOS RECIENTES', 'titulo' => 'Investigación y conocimiento científico', 'resumen' => 'Publicaciones y artículos recientes de la comunidad académica.'],
-    ['tipo' => 'ICAyCC EN LOS MEDIOS', 'titulo' => 'La ciencia del Instituto en los medios', 'resumen' => 'Entrevistas, notas y colaboraciones con medios de comunicación.'],
+    ['tipo' => 'DIVULGACIÓN', 'link' => 'comunicacion/divulgacion.php', 'titulo' => 'Artículos de Divulgación recientes del Instituto', 'resumen' => 'Espacio para destacar los artículos de diculgación del ICAyCC.'],
+    ['tipo' => 'ARTÍCULOS RECIENTES','link' => 'comunicacion/publicaciones.php', 'titulo' => 'Investigación y conocimiento científico', 'resumen' => 'Publicaciones y artículos recientes de la comunidad académica.'],
+    ['tipo' => 'ICAyCC EN LOS MEDIOS','link' => 'comunicacion/medios.php', 'titulo' => 'La ciencia del Instituto en los medios', 'resumen' => 'Entrevistas, notas y colaboraciones con medios de comunicación.'],
 ];
 function e(string $valor): string {
     return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
 }
+require_once __DIR__ . '/includes/agenda.php';
+$sql = "
+    SELECT
+        id_actualidad,
+        titulo,
+        imagen,
+        enlace_mas,
+        enlace_cartel,
+        fecha_publicacion,
+        fecha_despublicacion
+    FROM actualidad
+    WHERE activo = 1
+      AND fecha_publicacion <= CURDATE()
+      AND (
+            fecha_despublicacion IS NULL
+            OR fecha_despublicacion >= CURDATE()
+          )
+    ORDER BY orden ASC, fecha_registro DESC
+";
 
+$actualidad = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!--<div class="container py-5">-->
@@ -131,7 +151,7 @@ function e(string $valor): string {
             </div>
         </section>
 
-        <section id="actualidad" class="section">
+       <!-- <section id="actualidad" class="section">
             <div class="container">
                 <div class="mb-4 mb-lg-5">
                     <div class="section-kicker mb-2">Mantente al día</div>
@@ -158,9 +178,107 @@ function e(string $valor): string {
                     <?php endforeach; ?>
                 </div>
             </div>
-        </section>
+        </section>-->
+		<section id="actualidad" class="section">
+			<div class="container">
 
-        <section id="eventos" class="section section-soft">
+				<?php if (!empty($actualidad)): ?>
+
+					<div id="carruselActualidad"
+						 class="carousel slide actualidad-carousel"
+						 data-bs-ride="carousel"
+						 data-bs-interval="6000">
+
+						<div class="carousel-inner">
+
+							<?php foreach ($actualidad as $indice => $item): ?>
+
+								<div class="carousel-item <?= $indice === 0 ? 'active' : '' ?>">
+
+									<div class="actualidad-slide">
+
+										<img
+											src="<?= BASE_URL . e($item['imagen']) ?>"
+											alt="<?= e($item['titulo']) ?>"
+											class="actualidad-img"
+											loading="<?= $indice === 0 ? 'eager' : 'lazy' ?>"
+										>
+
+										<?php if (
+											!empty($item['enlace_mas']) ||
+											!empty($item['enlace_cartel'])
+										): ?>
+
+											<div class="actualidad-actions">
+
+												<?php if (!empty($item['enlace_mas'])): ?>
+
+													<a href="<?= e($item['enlace_mas']) ?>"
+													   class="btn btn-actualidad"
+													   target="_blank"
+													   rel="noopener noreferrer">
+														Ver más
+													</a>
+
+												<?php endif; ?>
+
+												<?php if (!empty($item['enlace_cartel'])): ?>
+
+													<a href="<?= e($item['enlace_cartel']) ?>"
+													   class="btn btn-cartel"
+													   target="_blank"
+													   rel="noopener noreferrer">
+														Cartel
+													</a>
+
+												<?php endif; ?>
+
+											</div>
+
+										<?php endif; ?>
+
+									</div>
+
+								</div>
+
+							<?php endforeach; ?>
+
+						</div>
+
+						<?php if (count($actualidad) > 1): ?>
+
+							<button class="carousel-control-prev"
+									type="button"
+									data-bs-target="#carruselActualidad"
+									data-bs-slide="prev"
+									aria-label="Publicación anterior">
+
+								<span class="carousel-control-prev-icon"
+									  aria-hidden="true"></span>
+
+							</button>
+
+							<button class="carousel-control-next"
+									type="button"
+									data-bs-target="#carruselActualidad"
+									data-bs-slide="next"
+									aria-label="Publicación siguiente">
+
+								<span class="carousel-control-next-icon"
+									  aria-hidden="true"></span>
+
+							</button>
+
+						<?php endif; ?>
+
+					</div>
+
+				<?php endif; ?>
+
+			</div>
+		</section>
+
+        <!--<section id="eventos" class="section section-soft">
             <div class="container">
                 <div class="row g-5">
                     <div class="col-lg-7">
@@ -205,8 +323,8 @@ function e(string $valor): string {
                     </div>
                 </div>
             </div>
-        </section>
-
+        </section>-->
+		<?php include __DIR__ . '/includes/agenda_vista.php'; ?>
         <section id="pronosticos" class="section">
             <div class="container">
                 <div class="section-kicker mb-2">Servicios científicos</div>
@@ -253,7 +371,7 @@ function e(string $valor): string {
                                 <div class="category mb-3"><?= e($noticia['tipo']) ?></div>
                                 <h3 class="h5 card-title"><?= e($noticia['titulo']) ?></h3>
                                 <p class="text-secondary"><?= e($noticia['resumen']) ?></p>
-                                <a class="text-link" href="#contacto">Ver publicaciones <i class="bi bi-arrow-right"></i></a>
+                                <a class="text-link" href="<?= e($noticia['link']) ?>">Ver publicaciones <i class="bi bi-arrow-right"></i></a>
                             </article>
                         </div>
                     <?php endforeach; ?>

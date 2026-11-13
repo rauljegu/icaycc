@@ -156,14 +156,14 @@
                     <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>comunicacion/index.php" id="menuComunicacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">Comunicaci&oacute;n</a>
                     <ul class="dropdown-menu" aria-labelledby="menuComunicacion">
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/index.php">Comunicaci&oacute;n</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/medios.php" target="_blank" rel="noopener noreferrer">ICAyCC en los medios</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/asf.php" target="_blank" rel="noopener noreferrer">Atm&oacute;sfera sin Fronteras</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/eventos.php" target="_blank" rel="noopener noreferrer">Eventos</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>contacto.php" target="_blank" rel="noopener noreferrer">Contacto</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/visitas.php" target="_blank" rel="noopener noreferrer">Visitas Guiadas</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/bienvenidos.php" target="_blank" rel="noopener noreferrer">Bienvenixs Estudiantes</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/atmosferia.php" target="_blank" rel="noopener noreferrer">ATMOSFERIA</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/index.php#descargables" target="_blank" rel="noopener noreferrer">Descargables</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/medios.php"  rel="noopener noreferrer">ICAyCC en los medios</a></li>
+                       <!-- <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/asf.php" target="_blank" rel="noopener noreferrer">Atm&oacute;sfera sin Fronteras</a></li>-->
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/eventos.php"  rel="noopener noreferrer">Eventos</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/index.php#contacto"  rel="noopener noreferrer">Contacto</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/visitas.php"  rel="noopener noreferrer">Visitas Guiadas</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/bienvenidos.php"  rel="noopener noreferrer">Bienvenixs Estudiantes</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/atmosferia.php"  rel="noopener noreferrer">ATMOSFERIA</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>comunicacion/index.php#descargables"  rel="noopener noreferrer">Descargables</a></li>
                     </ul>
                 </li>
             </ul>

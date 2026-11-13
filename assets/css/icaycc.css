@@ -967,3 +967,134 @@ body {
     }
 
 }
+
+/* ============================================
+   DESCARGABLES - UNIDAD DE COMUNICACIÓN
+=============================================== */
+
+.descargables-container {
+    background: #fff;
+    padding: 30px 15px 45px;
+}
+
+/* Encabezado */
+
+.descargables-header {
+    padding: 15px 10px;
+    margin-bottom: 15px;
+    background-color: #fafafa;
+    background-image:
+        linear-gradient(135deg,
+            transparent 48%,
+            rgba(0, 132, 146, 0.06) 49%,
+            rgba(0, 132, 146, 0.06) 50%,
+            transparent 51%);
+    background-size: 45px 45px;
+}
+
+.descargables-header h2 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--icaycc-dark);
+    margin: 0;
+}
+
+/* Documentos */
+
+.descargable-documento {
+    font-size: 0.75rem;
+    padding: 9px 14px;
+}
+
+/* Secciones de logos */
+
+.descargables-seccion h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--icaycc-dark);
+    margin-bottom: 20px;
+}
+
+/* Contenedor de cada logo */
+
+.logo-descargable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Área de visualización */
+
+.logo-preview {
+    width: 100%;
+    height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background: #fff;
+}
+
+.logo-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Fondo oscuro para el logo blanco */
+
+.logo-preview-oscuro {
+    background-color: #202020;
+}
+
+/* Logos verticales */
+
+.logo-preview-vertical {
+    height: 145px;
+}
+
+.logo-preview-vertical img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+/* Botones de descarga */
+
+.logo-botones {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-botones .btn {
+    width: 130px;
+    font-size: 0.68rem;
+    padding: 5px 6px;
+}
+
+/* Ajustes para dispositivos pequeños */
+
+@media (max-width: 767.98px) {
+
+    .descargables-container {
+        padding: 20px 10px 30px;
+    }
+
+    .descargables-seccion {
+        margin-top: 30px;
+    }
+
+    .logo-preview {
+        height: 120px;
+    }
+
+    .logo-preview-vertical {
+        height: 170px;
+    }
+
+}

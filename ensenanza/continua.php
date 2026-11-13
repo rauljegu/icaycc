@@ -115,7 +115,7 @@ try {
 				<?php
 				mostrarSliderRevolution(
 					'https://www.atmosfera.unam.mx/educacion-continua/',
-					'Edicación continua'
+					'brutal-hero1-1'
 				);
 				?>
 

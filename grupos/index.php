@@ -86,6 +86,83 @@ require_once __DIR__ . '/../config/config.php';
         </div>
 
     <?php } ?>
+	 <h1 class="titulo-seccion mb-4">
+        Laboratorios
+    </h1>
+<?php
+
+    $sql = "
+    SELECT
+        l.id_laboratorio,
+		l.sitio,
+        l.nombre,
+        COUNT(il.id_investigador) AS integrantes
+    FROM laboratorios l
+
+    LEFT JOIN investigador_laboratorio il
+        ON il.id_laboratorio = l.id_laboratorio
+
+    GROUP BY
+        l.id_laboratorio,
+        l.nombre
+
+    ORDER BY l.nombre
+    ";
+
+    $stmt = $pdo->query($sql);
+
+    while($lab = $stmt->fetch(PDO::FETCH_ASSOC)){
+
+    ?>
+
+        <div class="col-md-6 col-lg-4 mb-4">
+
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <span class="badge badge-grupo mb-2">
+                       Laboratorios
+                    </span>
+
+                    <h5>
+                        <?= htmlspecialchars($lab['nombre']); ?>
+                    </h5>
+
+                    <p class="text-muted">
+                        <?= $lab['integrantes']; ?>
+                        integrantes
+                    </p>
+
+                </div>
+
+                <div class="card-footer bg-white border-0">
+					<?php 
+						if($lab["sitio"] == ""){ ?>
+                    <a
+                        href="detalle_lab.php?id=<?= $lab['id_laboratorio']; ?>"
+                        class="btn btn-icaycc w-100">
+
+                        Ver Laboratorio
+
+                    </a>
+				<?php } else  {?>
+					<a
+                        href="<?= $lab['sitio']; ?>"
+                        class="btn btn-icaycc w-100" target="_blank">
+
+                        Ver Laboratorio
+
+                    </a>
+				<?php } ?>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <?php } ?>
 
     </div>
 

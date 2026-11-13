@@ -2,6 +2,261 @@
 	$name =basename($_SERVER["PHP_SELF"]);	
 	 include '../../includes/connect.php';
 	$connect = $conn;
+	require_once __DIR__ . '/actualidad_procesar.php';
+
+/* ==========================================
+   ADMINISTRACIÓN DE ACTUALIDAD
+   ========================================== */
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (empty($_SESSION['csrf_actualidad'])) {
+    $_SESSION['csrf_actualidad'] = bin2hex(random_bytes(32));
+}
+
+$mensajeActualidad = '';
+
+/* Directorios */
+
+$directorioFisico = dirname(__DIR__, 3) . '/assets/img/actualidad/';
+$directorioRelativo = 'assets/img/actualidad/';
+
+/* ==========================================
+   GUARDAR NUEVA PUBLICACIÓN
+   ========================================== */
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST'
+    && isset($_POST['guardar_actualidad'])) {
+
+    try {
+
+        /* Validar CSRF */
+
+        if (
+            empty($_POST['csrf_actualidad']) ||
+            !hash_equals(
+                $_SESSION['csrf_actualidad'],
+                $_POST['csrf_actualidad']
+            )
+        ) {
+            throw new Exception('Solicitud no válida.');
+        }
+
+        $titulo = trim($_POST['titulo'] ?? '');
+        $enlaceMas = trim($_POST['enlace_mas'] ?? '');
+        $enlaceCartel = trim($_POST['enlace_cartel'] ?? '');
+
+        $fechaPublicacion = $_POST['fecha_publicacion'] ?? '';
+        $fechaDespublicacion = $_POST['fecha_despublicacion'] ?? '';
+
+        $orden = filter_var(
+            $_POST['orden'] ?? 0,
+            FILTER_VALIDATE_INT
+        );
+
+        $activo = isset($_POST['activo']) ? 1 : 0;
+
+        /* Validaciones */
+
+        if ($titulo === '') {
+            throw new Exception('El título es obligatorio.');
+        }
+
+        if (!$orden || $orden < 1) {
+            throw new Exception('El orden debe ser un número mayor que cero.');
+        }
+
+        if (!$fechaPublicacion) {
+            throw new Exception('Selecciona la fecha de publicación.');
+        }
+
+        $inicio = DateTime::createFromFormat('!Y-m-d', $fechaPublicacion);
+
+        if (!$inicio || $inicio->format('Y-m-d') !== $fechaPublicacion) {
+            throw new Exception('La fecha de publicación no es válida.');
+        }
+
+        if ($fechaDespublicacion !== '') {
+
+            $fin = DateTime::createFromFormat(
+                '!Y-m-d',
+                $fechaDespublicacion
+            );
+
+            if (!$fin || $fin->format('Y-m-d') !== $fechaDespublicacion) {
+                throw new Exception('La fecha de despublicación no es válida.');
+            }
+
+            if ($fechaDespublicacion < $fechaPublicacion) {
+                throw new Exception(
+                    'La fecha final no puede ser anterior a la inicial.'
+                );
+            }
+        }
+
+        /* Validar enlaces */
+
+        foreach ([$enlaceMas, $enlaceCartel] as $url) {
+
+            if ($url !== '') {
+
+                $partes = parse_url($url);
+
+                if (
+                    filter_var($url, FILTER_VALIDATE_URL) === false ||
+                    !isset($partes['scheme']) ||
+                    !in_array(strtolower($partes['scheme']), ['http', 'https'])
+                ) {
+                    throw new Exception('Uno de los enlaces no es válido.');
+                }
+            }
+        }
+
+        /* Validar imagen */
+
+        if (
+            !isset($_FILES['imagen']) ||
+            $_FILES['imagen']['error'] !== UPLOAD_ERR_OK
+        ) {
+            throw new Exception('Debes seleccionar una imagen válida.');
+        }
+
+        if ($_FILES['imagen']['size'] > 5 * 1024 * 1024) {
+            throw new Exception('La imagen no debe superar los 5 MB.');
+        }
+
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+
+        $mime = $finfo->file($_FILES['imagen']['tmp_name']);
+
+        $formatos = [
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/webp' => 'webp'
+        ];
+
+        if (!isset($formatos[$mime])) {
+            throw new Exception('Formato de imagen no permitido.');
+        }
+
+        if (getimagesize($_FILES['imagen']['tmp_name']) === false) {
+            throw new Exception('El archivo no es una imagen válida.');
+        }
+
+        /* Crear directorio si no existe */
+
+        if (!is_dir($directorioFisico)) {
+
+            if (!mkdir($directorioFisico, 0755, true)) {
+                throw new Exception('No se pudo crear el directorio de imágenes.');
+            }
+        }
+
+        /* Nombre único */
+
+        $nombreImagen = bin2hex(random_bytes(16))
+            . '.' . $formatos[$mime];
+
+        $rutaDestino = $directorioFisico . $nombreImagen;
+
+        if (!move_uploaded_file(
+            $_FILES['imagen']['tmp_name'],
+            $rutaDestino
+        )) {
+            throw new Exception('No se pudo guardar la imagen.');
+        }
+
+        $rutaImagen = $directorioRelativo . $nombreImagen;
+
+        /* Insertar registro */
+
+        $sql = "
+            INSERT INTO actualidad (
+                titulo,
+                imagen,
+                enlace_mas,
+                enlace_cartel,
+                fecha_publicacion,
+                fecha_despublicacion,
+                orden,
+                activo
+            )
+            VALUES (?, ?, NULLIF(?, ''), NULLIF(?, ''),
+                    ?, NULLIF(?, ''), ?, ?)
+        ";
+
+        $stmt = $connect->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception('Error al preparar la consulta.');
+        }
+
+        $stmt->bind_param(
+            "ssssssii",
+            $titulo,
+            $rutaImagen,
+            $enlaceMas,
+            $enlaceCartel,
+            $fechaPublicacion,
+            $fechaDespublicacion,
+            $orden,
+            $activo
+        );
+
+        if (!$stmt->execute()) {
+
+            unlink($rutaDestino);
+
+            throw new Exception('No se pudo registrar la publicación.');
+        }
+
+        $stmt->close();
+
+        $_SESSION['mensaje_actualidad'] = [
+            'tipo' => 'success',
+            'texto' => 'Publicación registrada correctamente.'
+        ];
+
+        header('Location: secciones.php');
+        exit;
+
+    } catch (Exception $e) {
+
+        $mensajeActualidad = $e->getMessage();
+
+    }
+}
+
+/* ==========================================
+   CONSULTAR PUBLICACIONES
+   ========================================== */
+
+$sqlActualidad = "
+    SELECT *
+    FROM actualidad
+    ORDER BY orden ASC, fecha_registro DESC
+";
+
+$resultActualidad = $connect->query($sqlActualidad);
+
+if (!$resultActualidad) {
+    die('Error al consultar actualidad: ' . $connect->error);
+}
+
+/* Mensajes */
+
+if (isset($_SESSION['mensaje_actualidad'])) {
+
+    $mensajeActualidad = $_SESSION['mensaje_actualidad'];
+
+    unset($_SESSION['mensaje_actualidad']);
+
+}
+
+
+	
 	// Obtener lista de personal
 	$asi="SELECT * FROM personal ORDER BY activo DESC, nombres ASC, nombre ASC, apellido_paterno ASC, apellido_materno ASC; ";
 	$resultasi = $connect->query($asi);
@@ -10,6 +265,7 @@
 	if ($resultasi === false) {
 		die("Error en la consulta: " . $connect->error);
 	}
+require_once __DIR__ . '/agenda_admin.php';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -196,7 +452,10 @@
 					<br>
 					<br>
 				</div>
-			</div>
+				<?php include __DIR__ . '/actualidad_admin.php'; ?>
+			<?php include __DIR__ . '/agenda_admin_vista.php'; ?>
+
+			</div> <!--FIN ROW-->
 		</div>
 	<?php include'footer.php';?>
 
@@ -245,4 +504,93 @@
 				});
 			}
 		</script>
+		<script>
+
+// Vista previa de imagen
+
+document.getElementById('imagenActualidad')
+.addEventListener('change', function() {
+
+    const archivo = this.files[0];
+
+    const preview = document.getElementById('previewActualidad');
+
+    if (archivo) {
+
+        preview.src = URL.createObjectURL(archivo);
+
+        preview.style.display = 'inline-block';
+
+    } else {
+
+        preview.style.display = 'none';
+
+    }
+
+});
+
+
+// Validación de fechas
+
+const fechaInicio = document.getElementById('fechaPublicacion');
+
+const fechaFin = document.getElementById('fechaDespublicacion');
+
+fechaInicio.addEventListener('change', function() {
+
+    fechaFin.min = this.value;
+
+    if (fechaFin.value && fechaFin.value < this.value) {
+
+        fechaFin.value = '';
+
+    }
+
+});
+
+fechaFin.addEventListener('change', function() {
+
+    if (
+        this.value &&
+        fechaInicio.value &&
+        this.value < fechaInicio.value
+    ) {
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fecha incorrecta',
+            text: 'La fecha final no puede ser anterior a la fecha inicial.'
+        });
+
+        this.value = '';
+
+    }
+
+});
+
+
+// Notificaciones
+
+<?php if (is_array($mensajeActualidad)): ?>
+
+Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: <?= json_encode($mensajeActualidad['tipo']) ?>,
+    title: <?= json_encode($mensajeActualidad['texto']) ?>,
+    showConfirmButton: false,
+    timer: 3500
+});
+
+<?php elseif ($mensajeActualidad !== ''): ?>
+
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: <?= json_encode($mensajeActualidad) ?>
+});
+
+<?php endif; ?>
+
+</script>
 

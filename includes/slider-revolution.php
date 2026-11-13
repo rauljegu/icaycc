@@ -51,7 +51,187 @@ if (!function_exists('mostrarSliderRevolution')) {
 
 
         $html = curl_exec($ch);
+/**tmporal
 
+echo '<pre>';
+
+foreach (['Destacados', 'featured', '<rs-module-wrap', '<rs-module'] as $buscar) {
+
+    echo "\n========== $buscar ==========\n";
+
+    $posicion = 0;
+    $contador = 0;
+
+    while (($posicion = stripos($html, $buscar, $posicion)) !== false) {
+
+        $inicio = max(0, $posicion - 250);
+        $fragmento = substr($html, $inicio, 800);
+
+        echo "\nCoincidencia " . (++$contador) . ":\n";
+        echo htmlspecialchars($fragmento) . "\n";
+
+        $posicion += strlen($buscar);
+
+        if ($contador >= 5) {
+            break;
+        }
+    }
+
+    if ($contador === 0) {
+        echo "Sin coincidencias.\n";
+    }
+}
+
+echo '</pre>';
+/*---------*/
+
+/*tempral 2*-
+
+echo '<pre>';
+
+preg_match_all(
+    '/<sr7-module\b[^>]*>/i',
+    $html,
+    $modulos
+);
+
+foreach ($modulos[0] as $i => $modulo) {
+    echo "MÓDULO " . ($i + 1) . "\n";
+    echo htmlspecialchars($modulo) . "\n\n";
+}
+
+echo '</pre>';
+/*----------*/
+/*---temporal 3
+
+
+echo '<pre>';
+
+// CSS relacionados con Slider Revolution
+echo "===== CSS =====\n";
+
+preg_match_all(
+    '/<link\b[^>]*\bhref=["\']([^"\']+)["\'][^>]*>/i',
+    $html,
+    $css
+);
+
+foreach (array_unique($css[1]) as $urlCSS) {
+    if (preg_match('/revslider|revolution|sr7|rbtools/i', $urlCSS)) {
+        echo htmlspecialchars($urlCSS) . "\n";
+    }
+}
+
+// JavaScript externos
+echo "\n===== JAVASCRIPT EXTERNOS =====\n";
+
+preg_match_all(
+    '/<script\b[^>]*\bsrc=["\']([^"\']+)["\'][^>]*>/i',
+    $html,
+    $js
+);
+
+foreach (array_unique($js[1]) as $urlJS) {
+    if (preg_match('/revslider|revolution|sr7|rbtools|three/i', $urlJS)) {
+        echo htmlspecialchars($urlJS) . "\n";
+    }
+}
+
+// Scripts inline relacionados con SR7
+echo "\n===== SCRIPTS INLINE SR7 =====\n";
+
+preg_match_all(
+    '/<script\b[^>]*>(.*?)<\/script>/is',
+    $html,
+    $scripts
+);
+
+foreach ($scripts[1] as $i => $script) {
+    if (
+        stripos($script, 'SR7') !== false &&
+        stripos($script, 'SR7.JSON') === false
+    ) {
+        echo "\nSCRIPT " . ($i + 1) . "\n";
+        echo htmlspecialchars(substr(trim($script), 0, 1500));
+        echo "\n";
+    }
+}
+
+echo '</pre>';
+/*temporal 4 
+
+echo '<pre>';
+
+foreach (['welcome', 'featured'] as $id) {
+
+    $buscar = "SR7.JSON['" . $id . "']";
+    $pos = strpos($html, $buscar);
+
+    echo "\n========== CONFIGURACIÓN $id ==========\n";
+
+    if ($pos !== false) {
+        $fragmento = substr($html, $pos, 2500);
+        echo htmlspecialchars($fragmento);
+    } else {
+        echo "No encontrada";
+    }
+
+    echo "\n";
+}
+
+// Scripts inline que contienen inicialización general SR7
+echo "\n========== INICIALIZACIÓN GENERAL ==========\n";
+
+preg_match_all(
+    '/<script\b[^>]*>(.*?)<\/script>/is',
+    $html,
+    $scripts
+);
+
+foreach ($scripts[1] as $i => $script) {
+
+    if (
+        stripos($script, 'SR7') !== false &&
+        stripos($script, 'SR7.JSON') === false &&
+        stripos($script, 'SR7.PMH') === false
+    ) {
+        echo "\nSCRIPT " . ($i + 1) . "\n";
+        echo htmlspecialchars(substr(trim($script), 0, 2000));
+        echo "\n";
+    }
+}
+
+echo '</pre>';
+/*temporal 5*/
+preg_match_all(
+    '/<script\b[^>]*>(.*?)<\/script>/is',
+    $html,
+    $scripts
+);
+
+foreach ($scripts[1] as $i => $script) {
+
+    if (stripos($script, 'SR7.JSON') !== false) {
+
+        echo '<pre>';
+        echo "SCRIPT: " . ($i + 1) . "\n";
+        echo "Tamaño: " . strlen($script) . " bytes\n";
+        echo "Configuraciones encontradas:\n";
+
+        preg_match_all(
+            '/SR7\.JSON\s*\[\s*["\']([^"\']+)["\']\s*\]/i',
+            $script,
+            $ids
+        );
+
+        print_r(array_unique($ids[1]));
+
+        echo "Inicio del script:\n";
+        echo htmlspecialchars(substr(trim($script), 0, 300));
+        echo "\n</pre>";
+    }
+}
+/*-------------*/
         $httpCode = curl_getinfo(
             $ch,
             CURLINFO_HTTP_CODE
@@ -127,7 +307,52 @@ if (!function_exists('mostrarSliderRevolution')) {
             $html,
             $comentarios
         );
+		/*-------------------------------------------------------------------------
+		Temporal
+		---------------------------------------------------------------------------
+		*/
+		echo '<pre>';
+echo "HTTP: " . $httpCode . PHP_EOL;
+echo "URL: " . htmlspecialchars($url) . PHP_EOL;
+echo "Tamaño HTML: " . strlen($html) . PHP_EOL;
+echo "Comentarios encontrados: " . count($comentarios[1]) . PHP_EOL;
 
+foreach ($comentarios[1] as $comentario) {
+    if (
+        stripos($comentario, 'START') !== false ||
+        stripos($comentario, 'REVOLUTION') !== false
+    ) {
+        echo htmlspecialchars(trim($comentario)) . PHP_EOL;
+    }
+}
+
+echo '</pre>';
+
+/*tmporal 2*/
+echo '<pre>';
+
+echo "Módulos rs-module-wrap encontrados:\n\n";
+
+preg_match_all(
+    '/<rs-module-wrap\b[^>]*>/i',
+    $html,
+    $modulos
+);
+
+foreach ($modulos[0] as $i => $modulo) {
+    echo "MÓDULO " . ($i + 1) . ":\n";
+    echo htmlspecialchars($modulo) . "\n\n";
+}
+
+echo "Referencias a los alias:\n";
+
+foreach (['featured', 'revapi', 'Destacados'] as $buscar) {
+    echo $buscar . ': ' .
+        (stripos($html, $buscar) !== false ? 'ENCONTRADO' : 'NO ENCONTRADO') .
+        "\n";
+}
+
+echo '</pre>';
 
         /*
         |--------------------------------------------------------------------------

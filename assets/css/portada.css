@@ -56,3 +56,125 @@
             .hero-caption h1 { font-size: 1.25rem; }
             .brand-subtitle { max-width: 245px; }
         }
+		/* ==========================
+   CARRUSEL ACTUALIDAD
+   ========================== */
+
+.actualidad-carousel {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #061c32;
+}
+
+.actualidad-slide {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 7 / 3;
+    overflow: hidden;
+}
+
+.actualidad-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Botones */
+
+.actualidad-actions {
+    position: absolute;
+    right: 3%;
+    bottom: 7%;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    z-index: 5;
+}
+
+.btn-actualidad,
+.btn-cartel {
+    min-width: 145px;
+    padding: 12px 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 5px;
+    color: #fff;
+    background: #008c96;
+    border: 1px solid #008c96;
+}
+
+.btn-actualidad:hover,
+.btn-cartel:hover {
+    background: #006c75;
+    border-color: #006c75;
+    color: #fff;
+}
+
+/* Flechas */
+
+.actualidad-carousel .carousel-control-prev,
+.actualidad-carousel .carousel-control-next {
+    width: 5%;
+    opacity: 1;
+}
+
+.actualidad-carousel .carousel-control-prev-icon,
+.actualidad-carousel .carousel-control-next-icon {
+    background-color: #008c96;
+    border-radius: 4px;
+    padding: 22px;
+    background-size: 55%;
+}
+
+/* Transición */
+
+.actualidad-carousel .carousel-item {
+    transition: transform .7s ease-in-out;
+}
+
+/* Tabletas */
+
+@media (max-width: 768px) {
+
+    .actualidad-slide {
+        aspect-ratio: 7 / 3;
+    }
+
+    .actualidad-actions {
+        right: 3%;
+        bottom: 5%;
+        gap: 6px;
+    }
+
+    .btn-actualidad,
+    .btn-cartel {
+        min-width: auto;
+        padding: 7px 13px;
+        font-size: 11px;
+    }
+
+    .actualidad-carousel .carousel-control-prev,
+    .actualidad-carousel .carousel-control-next {
+        width: 9%;
+    }
+}
+
+/* Teléfonos */
+
+@media (max-width: 480px) {
+
+    .actualidad-actions {
+        right: 3%;
+        bottom: 4%;
+    }
+
+    .btn-actualidad,
+    .btn-cartel {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+}
