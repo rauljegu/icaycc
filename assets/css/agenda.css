@@ -1,0 +1,36 @@
+.agenda-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.35rem;text-align:center}
+.agenda-weekdays{margin-bottom:.45rem;color:#65757a;font-size:.82rem;font-weight:700}
+.agenda-day-empty{min-height:36px}
+.agenda-day{border:0;background:transparent;border-radius:50%;width:36px;height:36px;margin:auto;color:#30464b;line-height:1;font-size:.9rem}
+.agenda-day:hover,.agenda-day:focus-visible{outline:2px solid var(--icaycc-medium);outline-offset:1px}
+.agenda-day.has-events{background:var(--icaycc-medium);color:#fff;font-weight:700;position:relative}
+.agenda-day.has-events::after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;bottom:4px;left:calc(50% - 2px)}
+.agenda-day.selected{box-shadow:0 0 0 3px var(--icaycc-dark)}
+.agenda-day-event{border-color:var(--icaycc-medium)!important}
+@media(max-width:575.98px){.agenda-day{width:32px;height:32px;font-size:.82rem}.agenda-grid{gap:.2rem}.agenda-day-empty{min-height:32px}}
+
+/* Listas creadas con el editor de descripciones */
+.agenda-description li[data-list="bullet"]{list-style-type:disc}
+.agenda-description li[data-list="ordered"]{list-style-type:decimal}
+
+/* Contenido enriquecido de las descripciones de eventos */
+.agenda-description{overflow-wrap:anywhere}
+.agenda-description p{margin:0 0 .65rem}
+.agenda-description h1,.agenda-description h2,.agenda-description h3,.agenda-description h4{margin:.9rem 0 .5rem;line-height:1.25}
+.agenda-description ul,.agenda-description ol{padding-left:1.5rem;margin:.5rem 0 .8rem}
+.agenda-description blockquote{border-left:4px solid var(--icaycc-medium);padding:.25rem 0 .25rem 1rem;margin:.8rem 0;color:#52666b}
+.agenda-description figure.table{max-width:100%;overflow-x:auto}
+.agenda-description table{width:100%;border-collapse:collapse;margin:.7rem 0}
+.agenda-description td,.agenda-description th{border:1px solid #cbd5d8;padding:.4rem .55rem}
+.agenda-description a{color:var(--icaycc-medium);text-decoration:underline}
+
+/* Contenido enriquecido generado por Summernote */
+.agenda-description{overflow-wrap:anywhere}
+.agenda-description p{margin:0 0 .65rem}
+.agenda-description h1,.agenda-description h2,.agenda-description h3,.agenda-description h4{margin:.9rem 0 .5rem;line-height:1.25}
+.agenda-description ul,.agenda-description ol{padding-left:1.5rem;margin:.5rem 0 .8rem}
+.agenda-description blockquote{border-left:4px solid var(--icaycc-medium);padding:.25rem 0 .25rem 1rem;margin:.8rem 0;color:#52666b}
+.agenda-description table{width:100%;border-collapse:collapse;margin:.7rem 0}
+.agenda-description td,.agenda-description th{border:1px solid #cbd5d8;padding:.4rem .55rem}
+.agenda-description a{color:var(--icaycc-medium);text-decoration:underline}
+.agenda-description hr{border:0;border-top:1px solid #cbd5d8;margin:1rem 0}
