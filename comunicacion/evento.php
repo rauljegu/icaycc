@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/config.php';
 require_once ROOT_PATH . '/includes/slider-revolution.php';
-
+require_once __DIR__ . '/../includes/wp-media.php';
 date_default_timezone_set('America/Mexico_City');
 
 function evento_h($valor): string {
@@ -35,9 +35,13 @@ if ($evento) {
     elseif ($inicio > $ahora) $estado = 'Próximo';
     else $estado = 'En curso';
 }
-$imagen = ($evento && !empty($evento['imagen']))
-    ? BASE_URL . ltrim($evento['imagen'], '/')
-    : '';
+
+$imagen = wordpressMediaUrl($evento['imagen']);
+			
+//$imagen = ($evento && !empty(wordpressMediaUrl($evento['imagen'])))
+    //? BASE_URL . ltrim($evento['imagen'], '/')
+   // ?  ltrim(wordpressMediaUrl($evento['imagen']), '/')
+   // : '';
 ?>
 <link rel="stylesheet" href="<?= evento_h(BASE_URL) ?>comunicacion/assets/css/eventos.css">
 

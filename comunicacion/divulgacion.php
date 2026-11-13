@@ -1,26 +1,18 @@
-
 <?php
-
-require_once __DIR__ . '/../config/config.php';
-
-
+require_once __DIR__ . '/../config/config.php'; 
+require_once __DIR__ . '/../includes/wp-media.php';												   
 // ==========================================
 // FUNCIONES AUXILIARES
 // ==========================================
-
 function escapar($valor) {
     return htmlspecialchars((string)$valor, ENT_QUOTES, 'UTF-8');
 }
-
 // Categoría que vamos a consultar
 $categoria = 'Divulgacion de la ciencia';
-
 // ==========================================
 // SI SE RECIBE UN ID, MOSTRAR ENTRADA
 // ==========================================
-
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
 $entrada = null;
 $categorias = [];
 $etiquetas = [];
@@ -152,154 +144,109 @@ $stmt->execute([':categoria' => $categoria]);
 $entradas = $stmt->fetchAll();
 
 ?>
-
-
-
 <div class="container contenedor">
-
 <?php if ($id): ?>
-
     <?php if ($entrada): ?>
-
         <!-- VISTA INDIVIDUAL -->
-
         <a href="divulgacion.php" class="btn btn-outline-secondary mb-4">
             &larr; Regresar a Divulgaci&oacute;n de la Ciencia
         </a>
-
         <article class="bg-white rounded-3 p-4 p-md-5 shadow-sm">
-
             <h1 class="mb-3">
                 <?= escapar($entrada['post_title']) ?>
             </h1>
-
             <p class="fecha mb-4">
                 Publicado el
                 <?= date('d/m/Y', strtotime($entrada['post_date'])) ?>
             </p>
-
             <?php if ($entrada['imagen_destacada']): ?>
-                <img
-                    src="<?= escapar($entrada['imagen_destacada']) ?>"
-                    class="img-fluid rounded mb-4"
-                    alt="<?= escapar($entrada['post_title']) ?>">
-            <?php endif; ?>
-
+			<?php
+				$imagen = wordpressMediaUrl($entrada['imagen_destacada']);
+			?>
+			<img
+				src="<?= escapar($imagen) ?>"
+				class="img-fluid rounded mb-4"
+				alt="<?= escapar($entrada['post_title']) ?>">
+			<?php endif; ?>
             <div class="mb-4">
-
                 <strong>Categorías:</strong>
-
                 <?php foreach ($categorias as $cat): ?>
                     <span class="etiqueta">
                         <?= escapar($cat) ?>
                     </span>
                 <?php endforeach; ?>
-
             </div>
-
             <?php if ($etiquetas): ?>
                 <div class="mb-4">
-
                     <strong>Etiquetas:</strong>
-
                     <?php foreach ($etiquetas as $tag): ?>
                         <span class="etiqueta">
                             <?= escapar($tag) ?>
                         </span>
                     <?php endforeach; ?>
-
                 </div>
             <?php endif; ?>
-
             <hr>
-
             <div class="contenido-noticia">
-                <?= $entrada['post_content'] ?>
+               <?=wordpressMediaUrl($entrada['post_content']) ?>
             </div>
-
         </article>
-
     <?php else: ?>
-
         <div class="alert alert-warning">
             No se encontró la entrada solicitada.
         </div>
-
         <a href="divulgacion.php" class="btn btn-primary">
             Regresar
         </a>
-
     <?php endif; ?>
-
 <?php else: ?>
-
     <!-- VISTA DE LISTADO -->
-
     <header class="mb-5">
         <h1>Artículos Divulgaci&oacute;n de la Ciencia</h1>
-
 		<p class="text-secondary">
 			Publicaciones de Divulgaci&oacute;n del Instituto de Ciencias de la Atmósfera y Cambio Climático.
 		</p>
     </header>
-
     <div class="row g-4">
-
         <?php foreach ($entradas as $noticia): ?>
-
             <?php
             $resumen = $noticia['post_excerpt'];
-
             if (empty($resumen)) {
                 $resumen = strip_tags($noticia['post_content']);
-                $resumen = mb_substr($resumen, 0, 180) . '...';
-            }
+       }
+        $resumen = wordpressMediaUrl($resumen);
+        $resumen = mb_substr($resumen, 0, 180) . '...';
+        // Imagen destacada de esta noticia
+        $imagen = wordpressMediaUrl($noticia['imagen_destacada']);													  
             ?>
-
             <div class="col-md-6 col-lg-4">
-
                 <div class="card card-noticia">
-
-                    <?php if ($noticia['imagen_destacada']): ?>
+                    <?php if (!empty($imagen)): ?>
                         <img
-                            src="<?= escapar($noticia['imagen_destacada']) ?>"
+                            src="<?= escapar($imagen) ?>"
+							class="img-fluid rounded mb-4"						  
                             alt="<?= escapar($noticia['post_title']) ?>">
                     <?php endif; ?>
-
                     <div class="card-body d-flex flex-column">
-
                         <p class="fecha mb-2">
                             <?= date('d/m/Y', strtotime($noticia['post_date'])) ?>
                         </p>
-
                         <h5 class="card-title">
                             <?= escapar($noticia['post_title']) ?>
                         </h5>
-
                         <p class="card-text">
                             <?= escapar($resumen) ?>
                         </p>
-
                         <a
                             href="divulgacion.php?id=<?= (int)$noticia['ID'] ?>"
                             class="btn btn-primary mt-auto">
-
                             Leer Artículo de Divulgaci&oacute;n
-
                         </a>
-
                     </div>
-
                 </div>
-
             </div>
-
         <?php endforeach; ?>
-
     </div>
-
 <?php endif; ?>
-
 </div>
-
 <?php require_once ROOT_PATH . '/includes/footer.php'; ?>

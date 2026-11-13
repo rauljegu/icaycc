@@ -1,5 +1,597 @@
 <?php
 
+
+/*
+|--------------------------------------------------------------------------
+| AUXILIARES PARA SLIDER REVOLUTION 7
+|--------------------------------------------------------------------------
+*/
+
+if (!function_exists('sr7ExtraerBloque')) {
+
+    /**
+     * Extrae un objeto delimitado por llaves, respetando cadenas y escapes.
+     */
+    function sr7ExtraerBloque($texto, $posicionInicio)
+    {
+        $longitud = strlen($texto);
+        $nivel = 0;
+        $comilla = null;
+        $escape = false;
+
+        for ($i = $posicionInicio; $i < $longitud; $i++) {
+
+            $c = $texto[$i];
+
+            if ($comilla !== null) {
+
+                if ($escape) {
+                    $escape = false;
+                    continue;
+                }
+
+                if ($c === '\\') {
+                    $escape = true;
+                    continue;
+                }
+
+                if ($c === $comilla) {
+                    $comilla = null;
+                }
+
+                continue;
+            }
+
+            if ($c === '"' || $c === "'") {
+                $comilla = $c;
+                continue;
+            }
+
+            if ($c === '{') {
+                $nivel++;
+            } elseif ($c === '}') {
+                $nivel--;
+
+                if ($nivel === 0) {
+                    return substr(
+                        $texto,
+                        $posicionInicio,
+                        $i - $posicionInicio + 1
+                    );
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
+
+if (!function_exists('sr7ResolverUrl')) {
+
+    function sr7ResolverUrl($recurso, $urlBase)
+    {
+        $recurso = trim(
+            html_entity_decode(
+                $recurso,
+                ENT_QUOTES,
+                'UTF-8'
+            )
+        );
+
+        if ($recurso === '') {
+            return '';
+        }
+
+        if (preg_match('/^https?:\/\//i', $recurso)) {
+            return $recurso;
+        }
+
+        $partes = parse_url($urlBase);
+
+        if (empty($partes['scheme']) || empty($partes['host'])) {
+            return '';
+        }
+
+        $origen = $partes['scheme'] . '://' . $partes['host'];
+
+        if (strpos($recurso, '//') === 0) {
+            return $partes['scheme'] . ':' . $recurso;
+        }
+
+        if ($recurso[0] === '/') {
+            return $origen . $recurso;
+        }
+
+        $ruta = isset($partes['path']) ? $partes['path'] : '/';
+        $directorio = substr($ruta, 0, strrpos($ruta, '/') + 1);
+
+        return $origen . $directorio . $recurso;
+    }
+}
+
+
+if (!function_exists('sr7ProcesarModuloRemoto')) {
+
+    /**
+     * Procesa un módulo SR7 identificado por su alias.
+     *
+     * Devuelve true cuando la página utiliza SR7, incluso si no
+     * encuentra el alias solicitado. Así evita continuar por la
+     * ruta antigua de SR6.
+     */
+    function sr7ProcesarModuloRemoto(
+        $html,
+        $url,
+        $aliasSolicitado,
+        $aliasNormalizado
+    ) {
+
+        if (stripos($html, '<sr7-module') === false) {
+            return false;
+        }
+
+        $GLOBALS['SR7_REMOTE_STATE'] =
+            isset($GLOBALS['SR7_REMOTE_STATE'])
+                ? $GLOBALS['SR7_REMOTE_STATE']
+                : [
+                    'bootstrap' => false,
+                    'css' => [],
+                    'scripts' => [],
+                    'modulos' => []
+                ];
+
+        $estado =& $GLOBALS['SR7_REMOTE_STATE'];
+
+        /*
+        |--------------------------------------------------------------------------
+        | LOCALIZAR MÓDULO POR data-alias
+        |--------------------------------------------------------------------------
+        */
+
+        $moduloHTML = '';
+        $moduleId = '';
+
+        preg_match_all(
+            '/<sr7-module\b[^>]*>/i',
+            $html,
+            $etiquetas,
+            PREG_OFFSET_CAPTURE
+        );
+
+        foreach ($etiquetas[0] as $etiqueta) {
+
+            $tag = $etiqueta[0];
+            $inicio = $etiqueta[1];
+
+            if (
+                !preg_match(
+                    '/\bdata-alias\s*=\s*(["\'])(.*?)\1/i',
+                    $tag,
+                    $aliasMatch
+                )
+            ) {
+                continue;
+            }
+
+            $aliasEncontrado = strtolower(
+                preg_replace(
+                    '/[^a-z0-9]/i',
+                    '',
+                    $aliasMatch[2]
+                )
+            );
+
+            if ($aliasEncontrado !== $aliasNormalizado) {
+                continue;
+            }
+/*
+            if (
+                !preg_match(
+                    '/\bid\s*=\s*(["\'])(.*?)\1/i',
+                    $tag,
+                    $idMatch
+                )
+            ) {
+                continue;
+            }
+
+            $moduleId = $idMatch[2];*/
+			if (
+				!preg_match(
+					'/(?:^|\s)id\s*=\s*(["\'])(.*?)\1/i',
+					$tag,
+					$idMatch
+				)
+			) {
+				continue;
+			}
+
+			$moduleId = $idMatch[2];
+            /*
+             * Buscar el cierre correspondiente del elemento.
+             */
+
+            $resto = substr($html, $inicio);
+
+            preg_match_all(
+                '/<\/?sr7-module\b[^>]*>/i',
+                $resto,
+                $tagsModulo,
+                PREG_OFFSET_CAPTURE
+            );
+
+            $nivel = 0;
+            $finModulo = false;
+
+            foreach ($tagsModulo[0] as $tagModulo) {
+
+                $textoTag = $tagModulo[0];
+
+                if (preg_match('/^<\s*\//i', $textoTag)) {
+                    $nivel--;
+                } else {
+                    $nivel++;
+                }
+
+                if ($nivel === 0) {
+                    $finModulo =
+                        $inicio +
+                        $tagModulo[1] +
+                        strlen($textoTag);
+
+                    break;
+                }
+            }
+
+            if ($finModulo === false) {
+                continue;
+            }
+
+            $moduloHTML = substr(
+                $html,
+                $inicio,
+                $finModulo - $inicio
+            );
+
+            break;
+        }
+
+        if ($moduloHTML === '') {
+
+            echo '<div class="alert alert-warning">';
+            echo '<strong>Slider SR7 no encontrado.</strong><br>';
+            echo 'Alias solicitado: <code>' .
+                htmlspecialchars($aliasSolicitado, ENT_QUOTES, 'UTF-8') .
+                '</code>';
+            echo '</div>';
+
+            return true;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | OBTENER SCRIPTS INLINE
+        |--------------------------------------------------------------------------
+        */
+
+        preg_match_all(
+            '/<script\b[^>]*>(.*?)<\/script>/is',
+            $html,
+            $scriptsInline
+        );
+
+        $scriptBootstrap = '';
+        $scriptConfiguracion = '';
+        $scriptPMH = '';
+        $asignacionesRecursos = [];
+
+        foreach ($scriptsInline[1] as $script) {
+
+            /*
+             * Bootstrap general de SR7.
+             */
+
+            if (
+                !$estado['bootstrap'] &&
+                stripos($script, 'window._tpt') !== false &&
+                stripos($script, 'SR7.devMode') !== false
+            ) {
+                $scriptBootstrap = trim($script);
+            }
+
+            /*
+             * Configuración JSON del módulo solicitado.
+             */
+
+            if ($scriptConfiguracion === '') {
+
+                $patron = '/SR7\.JSON\s*\[\s*(["\'])' .
+                    preg_quote($moduleId, '/') .
+                    '\1\s*\]\s*=/i';
+
+                if (preg_match($patron, $script, $configMatch, PREG_OFFSET_CAPTURE)) {
+
+                    $posicionObjeto = strpos(
+                        $script,
+                        '{',
+                        $configMatch[0][1] + strlen($configMatch[0][0])
+                    );
+
+                    if ($posicionObjeto !== false) {
+
+                        $objeto = sr7ExtraerBloque(
+                            $script,
+                            $posicionObjeto
+                        );
+
+                        if ($objeto !== false) {
+
+                            $scriptConfiguracion =
+                                'SR7.JSON[' .
+                                json_encode($moduleId) .
+                                '] = ' .
+                                $objeto .
+                                ';';
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Bloque de preparación de dimensiones del módulo.
+             */
+
+         /*   if (
+                $scriptPMH === '' &&
+                stripos($script, 'SR7.PMH') !== false &&
+                stripos($script, $moduleId) !== false
+            ) {
+                $scriptPMH = trim($script);
+            }*/
+
+				if (
+					$scriptPMH === '' &&
+					preg_match(
+						'/SR7\.PMH\s*\[\s*(["\'])' .
+						preg_quote($moduleId, '/') .
+						'\1\s*\]/i',
+						$script
+					)
+				) {
+					$scriptPMH = trim($script);
+				}
+
+            /*
+             * Referencias a recursos de addons declaradas por SR7.
+             */
+
+            if (
+                preg_match_all(
+                    '/SR7\.E\.resources\.[a-zA-Z0-9_$]+\s*=\s*(?:"(?:\\\\.|[^"])*"|\'(?:\\\\.|[^\'])*\')\s*;/',
+                    $script,
+                    $recursos
+                )
+            ) {
+                foreach ($recursos[0] as $recurso) {
+                    $asignacionesRecursos[$recurso] = true;
+                }
+            }
+        }
+
+        if ($scriptConfiguracion === '') {
+
+            echo '<div class="alert alert-danger">';
+            echo '<strong>Error SR7:</strong> No se encontró la configuración ';
+            echo 'SR7.JSON del módulo <code>' .
+                htmlspecialchars($moduleId, ENT_QUOTES, 'UTF-8') .
+                '</code>.';
+            echo '</div>';
+
+            return true;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DETECTAR RECURSOS CSS
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            preg_match_all(
+                '/<link\b[^>]*\bhref=["\']([^"\']+)["\'][^>]*>/i',
+                $html,
+                $links
+            )
+        ) {
+
+            foreach ($links[1] as $href) {
+
+                if (
+                    stripos($href, 'sr7.css') === false &&
+                    !preg_match(
+                        '/(?:revslider.*addon|revolution\.addon|bubblemorph)/i',
+                        $href
+                    )
+                ) {
+                    continue;
+                }
+
+                $recurso = sr7ResolverUrl($href, $url);
+
+                if ($recurso !== '') {
+                    $estado['css'][$recurso] = true;
+                }
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DETECTAR RECURSOS JAVASCRIPT
+        |--------------------------------------------------------------------------
+        |
+        | Se conserva el orden en que aparecen en el documento remoto.
+        */
+
+        if (
+            preg_match_all(
+                '/<script\b[^>]*\bsrc=["\']([^"\']+)["\'][^>]*>\s*<\/script>/i',
+                $html,
+                $scriptsExternos
+            )
+        ) {
+
+            foreach ($scriptsExternos[1] as $src) {
+
+                if (
+                    stripos($src, 'tptools.js') === false &&
+                    stripos($src, 'sr7.js') === false &&
+                    !preg_match(
+                        '/(?:revslider.*addon|revolution\.addon|bubblemorph)/i',
+                        $src
+                    )
+                ) {
+                    continue;
+                }
+
+                $recurso = sr7ResolverUrl($src, $url);
+
+                if ($recurso !== '') {
+                    $estado['scripts'][$recurso] = true;
+                }
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | REGISTRAR Y MOSTRAR MÓDULO
+        |--------------------------------------------------------------------------
+        */
+
+        if (!$estado['bootstrap']) {
+
+            if ($scriptBootstrap !== '') {
+
+                echo '<script>';
+                echo $scriptBootstrap;
+                echo '</script>';
+
+                $estado['bootstrap'] = true;
+            }
+        }
+
+        foreach (array_keys($estado['css']) as $css) {
+
+            if (!isset($GLOBALS['SR7_REMOTE_CSS_PRINTED'][$css])) {
+
+                echo '<link rel="stylesheet" href="' .
+                    htmlspecialchars($css, ENT_QUOTES, 'UTF-8') .
+                    '">' . PHP_EOL;
+
+                $GLOBALS['SR7_REMOTE_CSS_PRINTED'][$css] = true;
+            }
+        }
+
+        /*
+         * Las referencias a recursos de addons deben existir antes
+         * de cargar el motor SR7.
+         */
+
+       /* foreach (array_keys($asignacionesRecursos) as $asignacion) {
+            echo '<script>' . $asignacion . '</script>' . PHP_EOL;
+        }*/
+
+		if (!isset($GLOBALS['SR7_REMOTE_RESOURCE_ASSIGNMENTS'])) {
+			$GLOBALS['SR7_REMOTE_RESOURCE_ASSIGNMENTS'] = [];
+		}
+
+		foreach (array_keys($asignacionesRecursos) as $asignacion) {
+
+			if (
+				!isset(
+					$GLOBALS['SR7_REMOTE_RESOURCE_ASSIGNMENTS'][$asignacion]
+				)
+			) {
+				echo '<script>' . $asignacion . '</script>' . PHP_EOL;
+
+				$GLOBALS['SR7_REMOTE_RESOURCE_ASSIGNMENTS'][$asignacion] = true;
+			}
+		}
+
+        echo '<script>';
+        echo $scriptConfiguracion;
+        echo '</script>' . PHP_EOL;
+
+        /*
+         * No modificamos el ID original: SR7.JSON, SR7.PMH y el DOM
+         * deben conservar exactamente el mismo identificador.
+         */
+
+        echo $moduloHTML . PHP_EOL;
+
+        if ($scriptPMH !== '') {
+            echo '<script>';
+            echo $scriptPMH;
+            echo '</script>' . PHP_EOL;
+        }
+
+        $estado['modulos'][$moduleId] = true;
+
+        return true;
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| FINALIZAR CARGA DE SLIDER REVOLUTION 7
+|--------------------------------------------------------------------------
+|
+| Debe llamarse una sola vez, después de todas las llamadas a
+| mostrarSliderRevolution().
+*/
+
+if (!function_exists('finalizarSlidersRevolution')) {
+
+
+function finalizarSlidersRevolution()
+{
+    if (
+        empty($GLOBALS['SR7_REMOTE_STATE']) ||
+        empty($GLOBALS['SR7_REMOTE_STATE']['modulos'])
+    ) {
+        return;
+    }
+
+    $estado = $GLOBALS['SR7_REMOTE_STATE'];
+
+    // Cargar los scripts externos de SR7.
+    foreach (array_keys($estado['scripts']) as $script) {
+
+        if (!isset($GLOBALS['SR7_REMOTE_JS_PRINTED'][$script])) {
+
+            echo '<script src="' .
+                htmlspecialchars($script, ENT_QUOTES, 'UTF-8') .
+                '"></script>' . PHP_EOL;
+
+            $GLOBALS['SR7_REMOTE_JS_PRINTED'][$script] = true;
+        }
+    }
+
+    // Iniciar el motor SR7 después de cargar sus dependencias.
+    echo '<script>
+        if (
+            window.SR7 &&
+            SR7.F &&
+            typeof SR7.F.init === "function"
+        ) {
+            SR7.F.init();
+        }
+    </script>' . PHP_EOL;
+}
+
+}
+
 if (!function_exists('mostrarSliderRevolution')) {
 
     function mostrarSliderRevolution($url, $alias)
@@ -202,7 +794,7 @@ foreach ($scripts[1] as $i => $script) {
 }
 
 echo '</pre>';
-/*temporal 5*/
+/*temporal 5
 preg_match_all(
     '/<script\b[^>]*>(.*?)<\/script>/is',
     $html,
@@ -293,7 +885,22 @@ foreach ($scripts[1] as $i => $script) {
             )
         );
 
+		/*
+		|--------------------------------------------------------------------------
+		| DETECTAR Y PROCESAR SR7
+		|--------------------------------------------------------------------------
+		*/
 
+		if (
+			sr7ProcesarModuloRemoto(
+				$html,
+				$url,
+				$alias,
+				$aliasNormalizado
+			)
+		) {
+			return;
+		}
         /*
         |--------------------------------------------------------------------------
         | BUSCAR COMENTARIOS
@@ -310,7 +917,7 @@ foreach ($scripts[1] as $i => $script) {
 		/*-------------------------------------------------------------------------
 		Temporal
 		---------------------------------------------------------------------------
-		*/
+		
 		echo '<pre>';
 echo "HTTP: " . $httpCode . PHP_EOL;
 echo "URL: " . htmlspecialchars($url) . PHP_EOL;
@@ -328,7 +935,7 @@ foreach ($comentarios[1] as $comentario) {
 
 echo '</pre>';
 
-/*tmporal 2*/
+/*tmporal 2
 echo '<pre>';
 
 echo "Módulos rs-module-wrap encontrados:\n\n";
@@ -353,7 +960,7 @@ foreach (['featured', 'revapi', 'Destacados'] as $buscar) {
 }
 
 echo '</pre>';
-
+*/
         /*
         |--------------------------------------------------------------------------
         | VARIABLES

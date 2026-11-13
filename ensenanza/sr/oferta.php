@@ -53,6 +53,7 @@ require_once ROOT_PATH . '/includes/slider-revolution.php';
 					'https://www.atmosfera.unam.mx/educacion-continua/',
 					'Destacados'
 				);
+					finalizarSlidersRevolution();
 ?>
 
 

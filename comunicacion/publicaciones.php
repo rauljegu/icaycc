@@ -3,7 +3,7 @@
 
 require_once __DIR__ . '/../config/config.php';
 
-
+require_once __DIR__ . '/../includes/wp-media.php';
 // ==========================================
 // FUNCIONES AUXILIARES
 // ==========================================
@@ -57,7 +57,7 @@ if ($id) {
 
         LIMIT 1
     ";
-echo $sql;
+//echo $sql;
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':id' => $id,
@@ -144,9 +144,9 @@ $sql = "
 
     GROUP BY p.ID
     ORDER BY p.post_date DESC
-    LIMIT 3
+    LIMIT 30
 ";
-echo $sql;
+//echo $sql;
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':categoria' => $categoria]);
 $entradas = $stmt->fetchAll();
@@ -179,8 +179,12 @@ $entradas = $stmt->fetchAll();
             </p>
 
             <?php if ($entrada['imagen_destacada']): ?>
+			<?php
+				$imagen = wordpressMediaUrl($entrada['imagen_destacada']);
+			?>
+			
                 <img
-                    src="<?= escapar($entrada['imagen_destacada']) ?>"
+                    src="<?= escapar($imagen) ?>"
                     class="img-fluid rounded mb-4"
                     alt="<?= escapar($entrada['post_title']) ?>">
             <?php endif; ?>
@@ -214,7 +218,7 @@ $entradas = $stmt->fetchAll();
             <hr>
 
             <div class="contenido-noticia">
-                <?= $entrada['post_content'] ?>
+                <?= wordpressMediaUrl($entrada['post_content']) ?>
             </div>
 
         </article>
@@ -254,23 +258,36 @@ $entradas = $stmt->fetchAll();
                 $resumen = strip_tags($noticia['post_content']);
                 $resumen = mb_substr($resumen, 0, 180) . '...';
             }
-            ?>
+			  
+
+        $resumen = wordpressMediaUrl($resumen);
+        $resumen = mb_substr($resumen, 0, 180) . '...';
+
+        // Imagen destacada de esta noticia
+        $imagen = wordpressMediaUrl($noticia['imagen_destacada']);
+        ?>
+
+								   
+		  
 
             <div class="col-md-6 col-lg-4">
 
-                <div class="card card-noticia">
 
-                    <?php if ($noticia['imagen_destacada']): ?>
-                        <img
-                            src="<?= escapar($noticia['imagen_destacada']) ?>"
-                            alt="<?= escapar($noticia['post_title']) ?>">
-                    <?php endif; ?>
+                <div class="card card-noticia">
+					<?php if (!empty($imagen)): ?>
+						<img
+							src="<?= escapar($imagen) ?>"
+							class="img-fluid rounded mb-4"
+							alt="<?= escapar($noticia['post_title']) ?>">
+					<?php endif; ?>
 
                     <div class="card-body d-flex flex-column">
 
                         <p class="fecha mb-2">
                             <?= date('d/m/Y', strtotime($noticia['post_date'])) ?>
                         </p>
+
+
 
                         <h5 class="card-title">
                             <?= escapar($noticia['post_title']) ?>
@@ -283,11 +300,8 @@ $entradas = $stmt->fetchAll();
                         <a
                             href="publicaciones.php?id=<?= (int)$noticia['ID'] ?>"
                             class="btn btn-primary mt-auto">
-
-                            Leer Artículo
-
+                            Leer Artículo						 									 											
                         </a>
-
                     </div>
 
                 </div>
@@ -297,7 +311,6 @@ $entradas = $stmt->fetchAll();
         <?php endforeach; ?>
 
     </div>
-
 <?php endif; ?>
 
 </div>

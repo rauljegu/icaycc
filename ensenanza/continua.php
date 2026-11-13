@@ -117,6 +117,7 @@ try {
 					'https://www.atmosfera.unam.mx/educacion-continua/',
 					'brutal-hero1-1'
 				);
+				finalizarSlidersRevolution();
 				?>
 
 		</div>
