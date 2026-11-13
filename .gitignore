@@ -4,6 +4,7 @@
 
 # Credenciales / configuración local
 /wp_content/
+/wp-content/
 includes/conexion.php
 admin/includes/connect.php
 .env
