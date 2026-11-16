@@ -22,7 +22,14 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute([$id]);
 
 $investigador = $stmt->fetch(PDO::FETCH_ASSOC);
-
+if(isset($investigador["grado_academico"])){
+	switch($investigador["grado_academico"]){
+		case 'Doctorado'; $investigador["grado_academico"] = "Dr(a)."; break;
+		case 'Maestria'; $investigador["grado_academico"] = "Mtra.(o)."; break;
+		case 'Licenciatura'; $investigador["grado_academico"] = "Lic."; break;
+		default: $investigador["grado_academico"] = "";
+	}
+}
 if(!$investigador){
     die('Investigador no encontrado');
 }

@@ -35,8 +35,7 @@
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>quienes/sources/plan.pdf" target="_blank" rel="noopener noreferrer">Plan de desarrollo</a></li>
                             </ul>
                         </li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>quienes/directorio.php#academicos">Acad&eacute;micos</a></li>
-                        <li><a class="dropdown-item" href="<?= BASE_URL ?>quienes/directorio.php#comisiones">Comisiones</a></li>
+                        <li><a class="dropdown-item" href="<?= BASE_URL ?>quienes/directorio.php">Directorio</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>quienes/transparencia.php">Transparencia</a></li>
 
                         <!-- COMISIONES Y COMITÉS: integrados aquí desde el menú comentado -->
@@ -141,6 +140,7 @@
                     <a class="nav-link dropdown-toggle" href="<?= BASE_URL ?>ensenanza/vinculacion.php" id="menuVinculacion" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vinculaci&oacute;n</a>
                     <ul class="dropdown-menu" aria-labelledby="menuVinculacion">
                         <!-- TODO: confirmar URL de LaNCAC -->
+						<li><a class="dropdown-item" href="<?= BASE_URL ?>ensenanza/vinculacion.php">Vinculaci&oacute;n</a></li>
                         <li><a class="dropdown-item" href="https://lancac.uacj.mx/">LaNCAC</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>ensenanza/continua.php#oferta">Oferta Educaci&oacute;n Continua</a></li>
                         <li><a class="dropdown-item" href="<?= BASE_URL ?>ensenanza/convenios.php">Convenios de Colaboraci&oacute;n</a></li>

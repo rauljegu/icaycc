@@ -24,7 +24,7 @@ require_once __DIR__ . '/../config/config.php';
 
     LEFT JOIN investigador_grupo ig
         ON ig.id_grupo = g.id_grupo
-
+	WHERE rol != 'administrativo'
     GROUP BY
         g.id_grupo,
         g.nombre

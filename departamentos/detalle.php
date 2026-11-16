@@ -91,7 +91,7 @@ $departamento = $stmt->fetch(PDO::FETCH_ASSOC);
     INNER JOIN investigador_departamento id
         ON id.id_investigador = i.id_personal
 
-    WHERE id.id_departamento = ?
+    WHERE id.id_departamento = ? 
 
     ORDER BY i.nombre
     ";

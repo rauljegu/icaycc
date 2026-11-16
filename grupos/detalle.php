@@ -39,7 +39,7 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
     $sql = "
     SELECT COUNT(*)
     FROM investigador_grupo
-    WHERE id_grupo=?
+    WHERE id_grupo=? AND rol != 'administrativo'
     ";
 
     $stmt = $pdo->prepare($sql);
@@ -51,7 +51,7 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     <p>
         <strong><?= $total; ?></strong>
-        acad&eacute;micos adscritos
+        Acad&eacute;micos adscritos
     </p>
 
     <h3>
@@ -73,7 +73,7 @@ $grupo = $stmt->fetch(PDO::FETCH_ASSOC);
     INNER JOIN personal i
         ON i.id_personal = ig.id_investigador
 
-    WHERE ig.id_grupo = ?
+    WHERE ig.id_grupo = ? AND rol != 'administrativo'
 
     ORDER BY i.nombre
     ";
