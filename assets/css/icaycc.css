@@ -1,8 +1,11 @@
 :root {
 
-    --icaycc-dark: #004F5C;
-    --icaycc-medium: #008492;
-    --icaycc-green: #2C9571;
+   /* --icaycc-dark: #004F5C;*/
+    --icaycc-dark: #5C94A6;
+    /*--icaycc-medium: #008492;*/
+    --icaycc-medium: #78A6B5;
+  /*  --icaycc-green: #2C9571;*/
+    --icaycc-green: #6EA65C;
     --icaycc-orange: #CF5415;
 
 }
@@ -163,7 +166,8 @@ body {
 ========================================= */
 
 .navbar-icaycc {
-    background-color: #004F5C;
+ /*   background-color: #004F5C;*/
+    background-color: var(--icaycc-dark);
     padding-top: 8px;
     padding-bottom: 8px;
 }

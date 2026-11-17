@@ -224,11 +224,11 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
 		-- 						ENLACES                  --
 		-------------------------------------------------->
 
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
 			<div class="card shadow-sm h-100">
 				<div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
 						<a
-							href="https://satelites.atmosfera.unam.mx/"
+							href="https://geocris.unam.mx/collections/64ee8b7c-cc23-43da-b39b-961d080d51e1"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="btn btn-primary boton-fondo-verde"
@@ -242,16 +242,31 @@ $unidad = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
         <!-- PRESENTACION 3 -->
-       <div class="col-12 col-md-6">
+       <div class="col-12 col-md-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
 					<a
-							href="http://ri.atmosfera.unam.mx:8001/#/"
+							href="https://uniatmos.atmosfera.unam.mx/#/"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="btn btn-primary boton-fondo-verde"
 						>
-							Bases de datos y geoportales
+							UNIATMOS
+											</a>
+                </div>
+            </div>
+        </div>
+		<!-- PRESENTACION 3 -->
+       <div class="col-12 col-md-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex flex-column justify-content-center align-items-center text-center card-fondo-verde">
+					<a
+							href="https://satelites.atmosfera.unam.mx/"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="btn btn-primary boton-fondo-verde"
+						>
+							LANOT
 											</a>
                 </div>
             </div>

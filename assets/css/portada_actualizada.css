@@ -1,0 +1,404 @@
+:root {
+               /* --icaycc-dark: #004F5C;*/
+			--icaycc-dark: #5C94A6;
+            --icaycc-medium: #008492;
+            --icaycc-green: #2C9571;
+            --icaycc-orange: #CF5415;
+            --icaycc-light: #F3F7F6;
+            --icaycc-text: #25383B;
+        }
+        html { scroll-behavior: smooth; }
+        body { color: var(--icaycc-text); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+        a { text-decoration: none; }
+        .topbar { background: var(--icaycc-dark); color: #fff; font-size: .84rem; }
+       /* .navbar { background: #fff; }*/
+        .brand-mark {
+            width: 48px; height: 48px; display: grid; place-items: center;
+            background: var(--icaycc-dark); color: #fff; border-radius: 50%;
+            font-size: 1.4rem; flex-shrink: 0;
+        }
+        .brand-title { color: var(--icaycc-dark); font-weight: 750; line-height: 1.15; }
+        .brand-subtitle { font-size: .78rem; color: #53686B; }
+       /* .navbar .nav-link { color: var(--icaycc-dark); font-weight: 600; }
+        .navbar .nav-link:hover, .navbar .nav-link:focus { color: var(--icaycc-medium); }*/
+        .hero-banner { background: #dce8e7; overflow: hidden; }
+        .hero-banner img { display: block; width: 100%; height: clamp(150px, 25vw, 300px); object-fit: cover; object-position: center; }
+        .hero-caption { background: linear-gradient(90deg, var(--icaycc-dark), #3A5D69 /*#006875*/); color: #fff; }
+        .section { padding: 3.75rem 0; }
+        .section-soft { background: var(--icaycc-light); }
+        .section-kicker { color: var(--icaycc-green); text-transform: uppercase; letter-spacing: .12em; font-size: .78rem; font-weight: 800; }
+        .section-title { color: var(--icaycc-dark); font-weight: 750; }
+        .section-intro { max-width: 720px; color: #5B6C6F; }
+        .content-card { height: 100%; border: 1px solid #e1e9e8; border-radius: 1rem; overflow: hidden; background: #fff; transition: transform .2s ease, box-shadow .2s ease; }
+        .content-card:hover { transform: translateY(-4px); box-shadow: 0 1rem 2rem rgba(0,79,92,.10); }
+        .card-symbol { height: 128px; display: grid; place-items: center; background: linear-gradient(135deg, #e8f1ef, #d4e7e4); color: var(--icaycc-dark); font-size: 2.5rem; }
+        .category { color: var(--icaycc-green); text-transform: uppercase; font-size: .72rem; font-weight: 800; letter-spacing: .07em; }
+        .card-title { color: var(--icaycc-dark); font-weight: 700; }
+        .text-link { color: var(--icaycc-medium); font-weight: 700; }
+        .text-link:hover { color: var(--icaycc-dark); }
+        .event-date { min-width: 76px; padding: .8rem .5rem; background: var(--icaycc-dark); color: #fff; border-radius: .75rem; text-align: center; }
+        .event-date strong { display: block; font-size: 1rem; }
+        .event-item { display: flex; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid #dce6e4; }
+        .forecast-card { height: 100%; border-radius: 1rem; padding: 1.5rem; color: #fff; background: var(--icaycc-dark); }
+        .forecast-card:nth-child(2) { background: var(--icaycc-medium); }
+        .forecast-card:nth-child(3) { background: #246E5B; }
+        .forecast-icon { font-size: 2rem; opacity: .95; }
+        .forecast-card p { color: rgba(255,255,255,.85); }
+        .btn-institutional { background: var(--icaycc-orange); color: #fff; border: 0; font-weight: 700; }
+        .btn-institutional:hover { background: #a94310; color: #fff; }
+        .btn-outline-institutional { color: var(--icaycc-dark); border: 1px solid var(--icaycc-dark); font-weight: 700; }
+        .btn-outline-institutional:hover { color: #fff; background: var(--icaycc-dark); }
+        footer { background: var(--icaycc-dark); color: #fff; }
+        footer a { color: #e3f2ef; }
+        footer a:hover { color: #fff; text-decoration: underline; }
+        .footer-rule { border-color: rgba(255,255,255,.22); }
+        @media (max-width: 575.98px) {
+            .section { padding: 2.5rem 0; }
+            .hero-caption h1 { font-size: 1.25rem; }
+            .brand-subtitle { max-width: 245px; }
+        }
+		/* ==========================
+   CARRUSEL ACTUALIDAD
+   ========================== */
+
+.actualidad-carousel {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #061c32;
+}
+
+.actualidad-slide {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 7 / 3;
+    overflow: hidden;
+}
+
+.actualidad-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Botones */
+
+.actualidad-actions {
+    position: absolute;
+    right: 3%;
+    bottom: 7%;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    z-index: 5;
+}
+
+.btn-actualidad,
+.btn-cartel {
+    min-width: 145px;
+    padding: 12px 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 5px;
+    color: #fff;
+    background: #008c96;
+    border: 1px solid #008c96;
+}
+
+.btn-actualidad:hover,
+.btn-cartel:hover {
+    background: #006c75;
+    border-color: #006c75;
+    color: #fff;
+}
+
+/* Flechas */
+
+.actualidad-carousel .carousel-control-prev,
+.actualidad-carousel .carousel-control-next {
+    width: 5%;
+    opacity: 1;
+}
+
+.actualidad-carousel .carousel-control-prev-icon,
+.actualidad-carousel .carousel-control-next-icon {
+    background-color: #008c96;
+    border-radius: 4px;
+    padding: 22px;
+    background-size: 55%;
+}
+
+/* Transición */
+
+.actualidad-carousel .carousel-item {
+    transition: transform .7s ease-in-out;
+}
+
+/* Tabletas */
+
+@media (max-width: 768px) {
+
+    .actualidad-slide {
+        aspect-ratio: 7 / 3;
+    }
+
+    .actualidad-actions {
+        right: 3%;
+        bottom: 5%;
+        gap: 6px;
+    }
+
+    .btn-actualidad,
+    .btn-cartel {
+        min-width: auto;
+        padding: 7px 13px;
+        font-size: 11px;
+    }
+
+    .actualidad-carousel .carousel-control-prev,
+    .actualidad-carousel .carousel-control-next {
+        width: 9%;
+    }
+}
+
+/* Teléfonos */
+
+@media (max-width: 480px) {
+
+    .actualidad-actions {
+        right: 3%;
+        bottom: 4%;
+    }
+
+    .btn-actualidad,
+    .btn-cartel {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+}
+
+/* ==========================================
+   BANNER PRINCIPAL ICAyCC
+   Composición diagonal: identidad a la izquierda,
+   fotografía de instrumentación a la derecha.
+   ========================================== */
+.hero-home {
+    --hero-height: 326px;
+    position: relative;
+    min-height: var(--hero-height);
+    height: clamp(300px, 30.2vw, 390px);
+    overflow: hidden;
+    isolation: isolate;
+    background: #dce8e7;
+}
+
+.hero-home__photo {
+    position: absolute;
+    inset: 0 0 0 42%;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-home__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 43%;
+}
+
+.hero-home__panel {
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 2;
+    width: 54%;
+    background: linear-gradient(110deg, #f7f7f5 0%, #eeeeec 78%, #e4e6e4 100%);
+    clip-path: polygon(0 0, 81% 0, 100% 100%, 0 100%);
+}
+
+.hero-home__content {
+    width: min(100%, 720px);
+    height: 100%;
+    padding: 24px 7.5% 20px 6.2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hero-home__logos {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.5vw, 30px);
+    min-height: 82px;
+}
+
+.hero-home__logos a {
+    display: inline-flex;
+    align-items: center;
+}
+
+.hero-home__logo-unam {
+    display: block;
+    width: clamp(48px, 5.2vw, 68px);
+    max-height: 66px;
+    object-fit: contain;
+}
+
+.hero-home__separator {
+    display: block;
+    height: 54px;
+    width: 1.5px;
+    background: #222;
+}
+
+.hero-home__logo-icaycc {
+    display: block;
+    width: clamp(155px, 17vw, 205px);
+    max-height: 70px;
+    object-fit: contain;
+}
+
+.hero-home__heading {
+    max-width: 680px;
+    padding-bottom: 2px;
+}
+
+.hero-home__heading h1 {
+    margin: 0;
+    color: #111;
+    font-size: clamp(1.45rem, 2.55vw, 2.05rem);
+    line-height: 1.13;
+    font-weight: 400;
+    letter-spacing: -.025em;
+}
+
+.hero-home__heading h1 strong {
+    font-weight: 750;
+}
+
+.hero-home__rule {
+    width: min(100%, 520px);
+    height: 2px;
+    margin: 14px 0 12px;
+    background: var(--icaycc-medium);
+}
+
+.hero-home__heading p {
+    margin: 0 0 27px;
+    color: #4c5152;
+    font-size: clamp(.68rem, 1.05vw, .88rem);
+    font-weight: 500;
+    letter-spacing: .13em;
+    white-space: nowrap;
+}
+
+.hero-home__heading p span {
+    margin: 0 10px;
+    font-weight: 800;
+}
+
+.hero-home__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 15px;
+    border: 1px solid #d56c23;
+    border-radius: 30px;
+    background: #d8752d;
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 700;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.hero-home__button:hover {
+    background: #b95b1c;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.hero-home__diagonal {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    height: 100%;
+    pointer-events: none;
+}
+
+.hero-home__diagonal--one {
+    width: 17%;
+    background: rgba(92, 148, 166, .55);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.hero-home__diagonal--two {
+    width: 9%;
+    background: rgba(0, 79, 92, .58);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+@media (min-width: 1500px) {
+    .hero-home__content { padding-left: max(6.2%, calc((100vw - 1400px) / 2)); }
+}
+
+@media (max-width: 991.98px) {
+    .hero-home { height: 315px; }
+    .hero-home__panel { width: 61%; }
+    .hero-home__photo { left: 43%; }
+    .hero-home__content { padding-left: 5%; padding-right: 9%; }
+    .hero-home__heading h1 { font-size: clamp(1.35rem, 3vw, 1.8rem); }
+    .hero-home__logo-icaycc { width: 165px; }
+}
+
+@media (max-width: 767.98px) {
+    .hero-home {
+        height: auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background: #f1f2f0;
+    }
+    .hero-home__photo {
+        position: relative;
+        inset: auto;
+        order: 2;
+        height: clamp(190px, 48vw, 300px);
+        width: 100%;
+    }
+    .hero-home__photo img { object-position: center 40%; }
+    .hero-home__panel {
+        position: relative;
+        inset: auto;
+        order: 1;
+        width: 100%;
+        min-height: 300px;
+        clip-path: none;
+        background: linear-gradient(110deg, #f7f7f5, #e9ecea);
+    }
+    .hero-home__content {
+        width: 100%;
+        min-height: 300px;
+        padding: 18px 5% 22px;
+        gap: 22px;
+    }
+    .hero-home__logos { min-height: 65px; gap: 16px; }
+    .hero-home__logo-unam { width: 48px; max-height: 54px; }
+    .hero-home__separator { height: 46px; }
+    .hero-home__logo-icaycc { width: min(54vw, 190px); }
+    .hero-home__heading h1 { font-size: clamp(1.35rem, 5vw, 1.9rem); }
+    .hero-home__heading p { white-space: normal; margin-bottom: 18px; letter-spacing: .09em; }
+    .hero-home__heading p span { margin: 0 5px; }
+    .hero-home__diagonal { display: none; }
+}
+
+@media (max-width: 380px) {
+    .hero-home__content { min-height: 285px; }
+    .hero-home__logos { gap: 11px; }
+    .hero-home__logo-unam { width: 42px; }
+    .hero-home__logo-icaycc { width: 155px; }
+    .hero-home__heading h1 { font-size: 1.28rem; }
+}

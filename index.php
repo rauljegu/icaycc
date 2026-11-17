@@ -112,43 +112,45 @@ $actualidad = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 <!--<div class="container py-5">-->
 
      <main>
-        <section id="inicio" aria-label="Banner principal">
-            <!--<div class="hero-banner">
-                <img src="icaycc-gif-banner.gif" alt="Fachada del Instituto de Ciencias de la Atmósfera y Cambio Climático de la UNAM">
-            </div>--->
-			<div class="hero-header">
-				<div class="hero-logos">
-					<a href="https://www.unam.mx/" target="_blank"
-					rel="noopener noreferrer" aria-label="UNAM">
-						<img
-						src="<?= BASE_URL ?>assets/img/unam.png"
-						alt="Universidad Nacional Autónoma de México"
-						class="logo-unam">
-					</a>
+        <section id="inicio" class="hero-home" aria-label="Presentación del ICAyCC">
+            <div class="hero-home__photo">
+                <img src="<?= BASE_URL ?>assets/img/icaycc-gif-banner.gif"
+                     alt="Banner institucional del ICAyCC"
+                     fetchpriority="high">
+            </div>
 
-					<a href="<?= BASE_URL ?>" aria-label="Inicio ICAyCC">
-						<img
-						src="<?= BASE_URL ?>assets/img/logo_icaycc_colores.svg"
-						alt="Instituto de Ciencias de la Atmósfera y Cambio Climático"
-						class="logo-icaycc">
-					</a>
-				</div>
-
-				<div class="hero-banner">
-					<img
-					src="icaycc-gif-banner.gif"
-					alt="Banner institucional del ICAyCC">
-				</div>
-			</div>
-            <div class="hero-caption py-3 py-md-4">
-                <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                    <div>
-                        <div class="small text-uppercase fw-semibold mb-1" style="letter-spacing:.12em;color:#BDE4D7">Investigación · Docencia · Difusión</div>
-                        <h1 class="h3 mb-0 fw-bold">Instituto de Ciencias de la Atmosf&eacute;ra y Cambio Clim&aacute;tico</h1>
+            <div class="hero-home__panel">
+                <div class="hero-home__content">
+                    <div class="hero-home__logos">
+                        <a href="https://www.unam.mx/" target="_blank" rel="noopener noreferrer"
+                           aria-label="Universidad Nacional Autónoma de México">
+                            <img src="<?= BASE_URL ?>assets/img/unam.png"
+                                 alt="Universidad Nacional Autónoma de México"
+                                 class="hero-home__logo-unam logo-unam">
+                        </a>
+                        <span class="hero-home__separator" aria-hidden="true"></span>
+                        <a href="<?= BASE_URL ?>" aria-label="Inicio ICAyCC">
+                            <img src="<?= BASE_URL ?>assets/img/logo_icaycc_colores.svg"
+                                 alt="Instituto de Ciencias de la Atmósfera y Cambio Climático"
+                                 class="hero-home__logo-icaycc">
+                        </a>
                     </div>
-                    <a class="btn btn-institutional px-4 py-2" href="#actualidad">Conoce nuestra actualidad <i class="bi bi-arrow-right ms-1"></i></a>
+
+                    <div class="hero-home__heading">
+                       <h1 class="hero-title">
+							<span>Instituto de Ciencias de la</span>
+							<span>Atmósfera y Cambio Climático</span>
+						</h1>
+                        <div class="hero-home__rule"></div>
+                        <p>INVESTIGACIÓN <span>·</span> DOCENCIA <span>·</span> DIFUSIÓN</p>
+                        <a class="hero-home__button" href="#actualidad">
+                            Conoce nuestra actualidad <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
+            <div class="hero-home__diagonal hero-home__diagonal--one" aria-hidden="true"></div>
+            <div class="hero-home__diagonal hero-home__diagonal--two" aria-hidden="true"></div>
         </section>
 
 		<section id="actualidad" class="section">
