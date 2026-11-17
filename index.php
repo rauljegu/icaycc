@@ -78,10 +78,10 @@ $convocatorias = [
     ['dia' => 'Agenda', 'mes' => 'ICAyCC', 'titulo' => 'Seminarios y conferencias', 'detalle' => 'Consulta próximamente los detalles de cada actividad.'],
 ];*/
 
-$noticias = [
-    ['tipo' => 'DIVULGACIÓN', 'link' => 'comunicacion/divulgacion.php', 'titulo' => 'Artículos de Divulgación recientes del Instituto', 'resumen' => 'Espacio para destacar los artículos de diculgación del ICAyCC.'],
+$noticias = [  
     ['tipo' => 'ARTÍCULOS RECIENTES','link' => 'comunicacion/publicaciones.php', 'titulo' => 'Investigación y conocimiento científico', 'resumen' => 'Publicaciones y artículos recientes de la comunidad académica.'],
     ['tipo' => 'ICAyCC EN LOS MEDIOS','link' => 'comunicacion/medios.php', 'titulo' => 'La ciencia del Instituto en los medios', 'resumen' => 'Entrevistas, notas y colaboraciones con medios de comunicación.'],
+	['tipo' => 'DIVULGACIÓN', 'link' => 'comunicacion/divulgacion.php', 'titulo' => 'Artículos de Divulgación recientes del Instituto', 'resumen' => 'Espacio para destacar los artículos de diculgación del ICAyCC.'],
 ];
 function e(string $valor): string {
     return htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
@@ -290,7 +290,7 @@ $actualidad = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
         <section id="noticias" class="section section-soft">
             <div class="container">
                 <div class="section-kicker mb-2">Conocimiento en movimiento</div>
-                <h2 class="section-title display-6 mb-2">Noticias y divulgación</h2>
+                <h2 class="section-title display-6 mb-2">Publicaciones, noticias y divulgación</h2>
                 <p class="section-intro mb-4">Investigación, publicaciones y participación del Instituto en la conversación pública.</p>
                 <div class="row g-4">
                     <?php foreach ($noticias as $noticia): ?>
