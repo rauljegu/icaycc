@@ -191,7 +191,7 @@ unset($grupoGrupoAdmin);
                                                     class="rounded flex-shrink-0"
                                                     style="width: 88px; height: 88px; object-fit: cover;"
                                                     loading="lazy"
-                                                    onerror="this.onerror=null;this.src='/assets/img/avatar.png';"
+                                                    onerror="this.onerror=null;this.src='<?= BASE_URL ?>assets/img/avatar.png';"
                                                 >
                                                 <div class="flex-grow-1 min-w-0">
                                                     <div class="fw-semibold"><?= directorioE($persona['nombre']); ?></div>
