@@ -102,9 +102,7 @@ echo '<!-- Logo UNAM = ' . BASE_URL . 'assets/img/firma-unam-new.png -->';
                             <a href="<?= BASE_URL ?>comunicacion/index.php">Comunicaci&oacute;n</a>
                         </li>
 
-                        <li>
-                            <a href="<?= BASE_URL ?>">Contacto</a>
-                        </li>
+                       
                     </ul>
 
                 </div>
@@ -120,13 +118,13 @@ echo '<!-- Logo UNAM = ' . BASE_URL . 'assets/img/firma-unam-new.png -->';
                     <ul class="footer-links">
 
                         <li>
-                            <a href="<?= BASE_URL ?>privacidad.php">
+                            <a href="<?= BASE_URL ?>wp-content/uploads/2024/01/1.-AVISO-DE-PRIVACIDAD-INTEGRAL-ICAYCC-30032022-enero2024.pdf" target="_blank">
                                 Aviso de privacidad
                             </a>
                         </li>
 
                         <li>
-                            <a href="<?= BASE_URL ?>secretarias/transparencia.php">
+                            <a href="<?= BASE_URL ?>quienes/transparencia.php">
                                 Transparencia
                             </a>
                         </li>
