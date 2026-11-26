@@ -1,4 +1,9 @@
-<?php //include 'settings.php'; 
+<?php 
+    // La configuración y la validación de sesión deben ejecutarse antes de cualquier HTML.
+    $name = basename($_SERVER['PHP_SELF']);
+    require_once 'settings.php';
+    require_once '../../includes/connect.php';
+//include 'settings.php'; 
 	$name =basename($_SERVER["PHP_SELF"]);	
 	if(isset($_GET["id"])){
 		$id = $_GET["id"];
@@ -37,6 +42,10 @@
     <div class="container mt-5 pt-5 content">
         <div class="row">
             <div class="col-md-8 mx-auto">
+				<button type="button" class="btn btn-outline-secondary"
+					onclick="if (history.length > 1) { history.back(); } else { window.location.href = 'personal.php'; }">
+					<i class="fas fa-arrow-left me-2"></i> Regresar
+				</button>
                 <div class="card bg-primary text-white">
                     <div class="card-header">Editar Personal</div>
                     <div class="card-body bg-light text-dark">
@@ -112,16 +121,16 @@
 										<label for="grado" class="form-label">Grado académico</label>
 										<select name="grado" id="grado" class="form-select" required>
 											<option value="">Seleccione un grado académico</option>
-											<option value="Lic."
-												<?= ($row1["grado_academico"] == "Lic.") ? "selected" : ""; ?>>
+											<option value="Licenciatura"
+												<?= ($row1["grado_academico"] == "Licenciatura") ? "selected" : ""; ?>>
 												Licenciatura
 											</option>
-											<option value="Mtro(a)."
-												<?= ($row1["grado_academico"] == "Mtro(a).") ? "selected" : ""; ?>>
+											<option value="Maestría"
+												<?= ($row1["grado_academico"] == "Maestría") ? "selected" : ""; ?>>
 												Maestría
 											</option>
-											<option value="Dr(a)."
-												<?= ($row1["grado_academico"] == "Dr(a).") ? "selected" : ""; ?>>
+											<option value="Doctorado"
+												<?= ($row1["grado_academico"] == "Doctorado") ? "selected" : ""; ?>>
 												Doctorado
 											</option>
 											<option value="Sin estudios profesionales"
@@ -130,13 +139,120 @@
 											</option>
 										</select>
 									</div>
-
+									<!--Categoria-->
+									<div class="col-4">
+										<label for="categoria" class="form-label">Categoría</label>
+										<select name="categoria" id="categoria" class="form-select" required>
+											<option value="0">Seleccione una categoría</option>
+											<?php
+												$cate= $row1["id_categoria_personal"];
+												$sqlcat="SELECT id_categoria, nombre FROM categoria_personal WHERE id_categoria 
+												IN (SELECT id_categoria_personal FROM personal WHERE id_personal = $id)";
+												include '../../includes/connect.php';
+												$connect = $conn;
+												//echo $sqlcat;
+												$resultcat = $conn->query($sqlcat);
+												if ($resultcat->num_rows > 0) {
+													while($rowcat= $resultcat->fetch_assoc()) { ?>																										
+														<option value="<?=$rowcat["id_categoria"]?>" selected>
+															<?php echo $rowcat["nombre"]; ?>
+														</option>
+											<?php 	}
+												} 
+													$sqlcat1="SELECT id_categoria, nombre FROM categoria_personal WHERE id_categoria 
+													NOT IN (SELECT id_categoria_personal FROM personal WHERE id_personal = $id) ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql2;
+														$resultcat1 = $conn->query($sqlcat1);
+													if ($resultcat1->num_rows > 0) {
+														while($rowcat1= $resultcat1->fetch_assoc()) { ?>																										
+															<option value="<?=$rowcat1["id_categoria"]?>">
+																<?php echo $rowcat1["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
+									<!--Nivel-->
+									<div class="col-4">
+										<label for="nivel" class="form-label">Nivel</label>
+										<select name="nivel" id="nivel" class="form-select" required>
+											<option value="0">Seleccione un nivel</option>
+											<?php
+												
+												$sqlniv="SELECT id_nivel, nivel FROM nivel WHERE id_nivel 
+												IN (SELECT id_nivel FROM personal WHERE id_personal = $id)";
+												include '../../includes/connect.php';
+												$connect = $conn;
+												//echo $sqlniv;
+												$resultniv = $conn->query($sqlniv);
+												if ($resultniv->num_rows > 0) {
+													while($rowniv= $resultniv->fetch_assoc()) { ?>																										
+														<option value="<?=$rowniv["id_nivel"]?>" selected>
+															<?php echo $rowniv["nivel"]; ?>
+														</option>
+											<?php 	}
+												} 
+													$sqlniv1="SELECT id_nivel, nivel FROM nivel WHERE id_nivel 
+													NOT IN (SELECT id_nivel FROM personal WHERE id_personal = $id) ORDER BY nivel ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql2;
+														$resultniv1 = $conn->query($sqlniv1);
+													if ($resultniv1->num_rows > 0) {
+														while($rowniv1= $resultniv1->fetch_assoc()) { ?>																										
+															<option value="<?=$rowniv1["id_nivel"]?>">
+																<?php echo $rowniv1["nivel"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
+									<!--Subnivel-->
+									<div class="col-4">
+										<label for="subnivel" class="form-label">Subnivel</label>
+										<select name="subnivel" id="subnivel" class="form-select" required>
+											<option value="0">Seleccione un subbnivel</option>
+											<?php
+												
+												$sqlsniv="SELECT id_sub_nivel, subnivel FROM sub_nivel WHERE id_sub_nivel 
+												IN (SELECT id_sub_nivel FROM personal WHERE id_personal = $id)";
+												include '../../includes/connect.php';
+												$connect = $conn;
+												//echo $sqlsniv;
+												$resultsniv = $conn->query($sqlsniv);
+												if ($resultsniv->num_rows > 0) {
+													while($rowsniv= $resultsniv->fetch_assoc()) { ?>																										
+														<option value="<?=$rowsniv["id_sub_nivel"]?>" selected>
+															<?php echo $rowsniv["subnivel"]; ?>
+														</option>
+											<?php 	}
+												} 
+													$sqlsniv1="SELECT id_sub_nivel, subnivel FROM sub_nivel WHERE id_sub_nivel 
+													NOT IN (SELECT id_sub_nivel FROM personal WHERE id_personal = $id) ORDER BY subnivel ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql2;
+														$resultsniv1 = $conn->query($sqlsniv1);
+													if ($resultsniv1->num_rows > 0) {
+														while($rowsniv1= $resultsniv1->fetch_assoc()) { ?>																										
+															<option value="<?=$rowsniv1["id_sub_nivel"]?>">
+																<?php echo $rowsniv1["subnivel"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
 									<!-- Perfiles académicos -->
 									<div class="col-12">
 										<div class="row g-3">
-
+											<h3>Perfiles acad&eacute;micos</h3>
 											<!-- Google Scholar -->
-											<div class="col-12 col-md-6 col-xl-3">
+											<div class="col-12 col-md-6 col-xl-4">
 												<label for="scholar" class="form-label">Google Scholar</label>
 												<input type="text"
 													   name="scholar"
@@ -147,7 +263,7 @@
 											</div>
 											
 											<!-- ID SIIA -->
-											<div class="col-12 col-md-6 col-xl-3">
+											<div class="col-12 col-md-6 col-xl-4">
 												<label for="scholar" class="form-label">ID SIIA</label>
 												<input type="text"
 													   name="siia"
@@ -158,7 +274,7 @@
 											</div>
 
 											<!-- ResearchGate -->
-											<div class="col-12 col-md-6 col-xl-3">
+											<div class="col-12 col-md-6 col-xl-4">
 												<label for="researchgate" class="form-label">ResearchGate</label>
 												<input type="text"
 													   name="researchgate"
@@ -169,7 +285,7 @@
 											</div>
 
 											<!-- ORCID -->
-											<div class="col-12 col-md-6 col-xl-3">
+											<div class="col-12 col-md-6 col-xl-4">
 												<label for="orcid" class="form-label">ORCID</label>
 												<input type="text"
 													   name="orcid"
@@ -180,7 +296,7 @@
 											</div>
 
 											<!-- Scopus -->
-											<div class="col-12 col-md-6 col-xl-3">
+											<div class="col-12 col-md-6 col-xl-4">
 												<label for="scopus" class="form-label">Scopus</label>
 												<input type="text"
 													   name="scopus"
@@ -194,10 +310,11 @@
 									</div>
 									
 									<div class="col-12">
-											<span class="input-group-text">Semblanza</span>
+											<span class="input-group-text"><h3>Semblanza</h3></span>
 											<textarea name="semblanza" class="form-control" placeholder="Rese&ntilde;a"><?=$res=$row1["semblanza"];?></textarea>
 									</div>
 									<!--Departamento -->
+									<h3>Adscripci&oacute;n</h3>
 									<div class="col-12">
 										<label for="Departamento" class="form-label">Departamento</label>
 										<select name="departamento" id="Departamento" class="form-select" required>
@@ -302,6 +419,42 @@
 												?>																							
 										</select>
 									</div>
+									<h3>Cargos</h3>
+									<!--Cargos -->
+									<div class="col-12">
+										<label for="cargos" class="form-label">Cargo</label>
+										<select name="cargo" id="cargos" class="form-select" required>
+											<option value="0">Seleccione un cargo</option>
+											<?php
+												$cargo="SELECT id_cargo, nombre FROM cargos WHERE id_cargo
+												IN (SELECT cargo FROM personal WHERE id_personal = $id)";
+												include '../../includes/connect.php';
+												$connect = $conn;
+												//echo $sql6;
+												$resultcargo = $conn->query($cargo);
+												if ($resultcargo->num_rows > 0) {
+													while($rowcargo= $resultcargo->fetch_assoc()) { ?>																										
+														<option value="<?=$rowcargo["id_cargo"]?>" selected>
+															<?php echo $rowcargo["nombre"]; ?>
+														</option>
+											<?php 	}
+												} 
+													$cargo1="SELECT id_cargo, nombre FROM cargos WHERE id_cargo 
+													NOT IN (SELECT cargo FROM personal WHERE id_personal = $id) ORDER BY nombre ASC";
+													include '../../includes/connect.php';
+													$connect = $conn;
+													//echo $sql7;
+														$resultcargo1 = $conn->query($cargo1);
+													if ($resultcargo1->num_rows > 0) {
+														while($rowcargo1= $resultcargo1->fetch_assoc()) { ?>																										
+															<option value="<?=$rowcargo1["id_cargo"]?>">
+																<?php echo $rowcargo1["nombre"]; ?>
+															</option>
+										<?php			} 
+													} 
+												?>																							
+										</select>
+									</div>
 
 						<?php	}
 						?>
@@ -315,6 +468,10 @@
 						<?php //include'cambiarpass.php';?>
                     </div>
                 </div>
+				<button type="button" class="btn btn-outline-secondary"
+					onclick="if (history.length > 1) { history.back(); } else { window.location.href = 'personal.php'; }">
+					<i class="fas fa-arrow-left me-2"></i> Regresar
+				</button>
             </div>
         </div>
     </div>

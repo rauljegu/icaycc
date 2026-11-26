@@ -1,3 +1,26 @@
+<?php
+// Iniciar sesión antes de enviar cualquier contenido HTML
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once 'connect.php';
+require_once 'functions.php';
+
+$login = new Login();
+
+// Procesar autenticación únicamente cuando se envía el formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $login->LoginSystem();
+}
+
+// Si ya existe una sesión, verificar usuario y rol
+if (isset($_SESSION['login'])) {
+    $login->SessionCheck();
+    $login->UserType();
+	$_SESSION["role"];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -11,15 +34,7 @@
 		  <link href="../assets/estilo.css" rel="stylesheet">
 	</head>
 	<body>
-				<?php
-include_once 'connect.php'; // include connection
-include 'functions.php'; //include functions
-$login = new Login;
-$login->LoginSystem();
-$login->SessionCheck();
-$login->UserType();
- $_SESSION["role"];
-?>
+
 	<div id="loading-spinner" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1500;">
 			<div class="spinner-border text-light" role="status">
 				<span class="visually-hidden">Cargando...</span>

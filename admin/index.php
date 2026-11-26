@@ -27,7 +27,7 @@ require_once __DIR__ . '/../config/config.php';
 		</nav>-->
 		<?php
 			include'modal_inicio.php';
-			include'modal_registro.php';
+			//include'modal_registro.php';
 		?>
 		<!--<div class="container mt-4 content" >-->
 			<div class="container py-5">

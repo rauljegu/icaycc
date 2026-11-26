@@ -1,5 +1,6 @@
 <?php //include 'settings.php'; 
 	$name =basename($_SERVER["PHP_SELF"]);	
+	$directorio = basename(__DIR__);
 	 include '../../includes/connect.php';
 	$connect = $conn;
 	require_once __DIR__ . '/actualidad_procesar.php';
@@ -411,18 +412,7 @@ require_once __DIR__ . '/agenda_admin.php';
 											<div class="input-group mb-3">
 												<select class="form-select" id="rol" name="rol" aria-label="rol">
 													<option selected>Selecciona un rol</option>
-													<?php// include'conexion.php';
-														$rol="SELECT * FROM roles WHERE tipo =  2 OR tipo =  3 OR tipo =  5 ";
-														//echo $rol;
-														$resultrol = $conn->query($rol);
-														if($resultrol->num_rows > 0) {
-															$optionrol="";
-																while ($rowrol = $resultrol->fetch_assoc()){
-																		$optionrol .= " <option value=".$rowrol["tipo"].">".$rowrol["rol"]."</option>";
-																}
-														}	
-													echo $optionrol;
-													?>
+			
 												</select>
 											</div>
 											<div class="input-group mb-3">

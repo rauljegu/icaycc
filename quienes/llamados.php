@@ -25,7 +25,7 @@ $sqlInstitucional = "
     FROM direccion d
     INNER JOIN personal p ON p.id_personal = d.responsable
     LEFT JOIN organigrama o ON o.id_organigrama = d.id_organigrama
-    LEFT JOIN cargos c ON c.id_categoria = p.cargo
+    LEFT JOIN cargos c ON c.id_cargo = p.cargo
     WHERE d.activo = 1 AND p.activo = 1
 
     UNION ALL
@@ -45,7 +45,7 @@ $sqlInstitucional = "
     FROM secretarias s
     INNER JOIN personal p ON p.id_personal = s.responsable
     LEFT JOIN organigrama o ON o.id_organigrama = s.id_organigrama
-    LEFT JOIN cargos c ON c.id_categoria = p.cargo
+    LEFT JOIN cargos c ON c.id_cargo = p.cargo
     WHERE s.activo = 1 AND p.activo = 1
 
     UNION ALL
@@ -65,7 +65,7 @@ $sqlInstitucional = "
     FROM unidades u
     INNER JOIN personal p ON p.id_personal = u.responsable
     LEFT JOIN organigrama o ON o.id_organigrama = u.id_organigrama
-    LEFT JOIN cargos c ON c.id_categoria = p.cargo
+    LEFT JOIN cargos c ON c.id_cargo = p.cargo
     WHERE u.activo = 1 AND p.activo = 1
 
     ORDER BY area_organigrama, nombre_area, nombre
@@ -227,7 +227,7 @@ $sqlAdministrativoAreas = "
     INNER JOIN personal p
         ON p.id_personal = pd.id_personal
     LEFT JOIN cargos c
-        ON c.id_categoria = p.cargo
+        ON c.id_cargo = p.cargo
     WHERE p.activo = 1
       AND p.id_tipo_personal = 2
       AND o.activo = 1
@@ -265,7 +265,7 @@ $sqlAdministrativoSecretarias = "
         ON sad.id_dep_subarea = ps.id_dep_subarea
        AND sad.id_subarea = sa.id_subarea
     LEFT JOIN cargos c
-        ON c.id_categoria = p.cargo
+        ON c.id_cargo = p.cargo
     WHERE p.activo = 1
       AND p.id_tipo_personal = 2
       AND s.activo = 1
@@ -299,7 +299,7 @@ $sqlAdministrativoUnidades = "
     LEFT JOIN subareas sa
         ON sa.id_subarea = pu.id_subarea
     LEFT JOIN cargos c
-        ON c.id_categoria = p.cargo
+        ON c.id_cargo = p.cargo
     WHERE p.activo = 1
       AND p.id_tipo_personal = 2
       AND u.activo = 1
@@ -325,7 +325,7 @@ $sqlAdministrativoDepartamentos = "
     FROM investigador_departamento idp
     INNER JOIN departamentos d ON d.id_departamento = idp.id_departamento
     INNER JOIN personal p ON p.id_personal = idp.id_investigador
-    LEFT JOIN cargos c ON c.id_categoria = p.cargo
+    LEFT JOIN cargos c ON c.id_cargo = p.cargo
     WHERE d.activo = 1
       AND p.activo = 1
       AND p.id_tipo_personal = 2
@@ -352,7 +352,7 @@ $sqlAdministrativoGrupos = "
     FROM investigador_grupo ig
     INNER JOIN grupos g ON g.id_grupo = ig.id_grupo
     INNER JOIN personal p ON p.id_personal = ig.id_investigador
-    LEFT JOIN cargos c ON c.id_categoria = p.cargo
+    LEFT JOIN cargos c ON c.id_cargo = p.cargo
     WHERE g.activo = 1
       AND p.activo = 1
       AND p.id_tipo_personal = 2

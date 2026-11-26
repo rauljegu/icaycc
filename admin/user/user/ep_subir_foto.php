@@ -1,11 +1,13 @@
-
 <?php
+// Iniciar la sesión antes de enviar cualquier encabezado o incluir otros archivos.
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
+
 header('Content-Type: application/json; charset=utf-8');
 
-include '../../includes/connect.php';
+require_once '../../includes/connect.php';
 $connect = $conn;
-
-session_start();
 
 function responder($status, $mensaje, $extra = []) {
     echo json_encode(
@@ -166,4 +168,3 @@ $connect->close();
 responder("success", "Foto actualizada correctamente.", [
     "archivo" => $nombre_archivo
 ]);
-?>

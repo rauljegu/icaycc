@@ -1,6 +1,35 @@
 <?php //include 'settings.php'; 
-	$name =basename($_SERVER["PHP_SELF"]);	
+	//$name =basename($_SERVER["PHP_SELF"]);	
+	
+
+// Iniciar sesión antes de cualquier salida
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Verificar que exista una sesión autenticada
+if (!isset($_SESSION['login'])) {
+    header("Location: ../../index.php");
+    exit;
+}
+
+// Nombre del archivo actual
+$name = basename($_SERVER["PHP_SELF"]);
+
+// Cargar funciones de actualización
+require_once 'funciones1.php';
+
+// Procesar actualización antes de generar HTML
+if (
+    $_SERVER["REQUEST_METHOD"] === "POST" &&
+    isset($_GET["eq"]) &&
+    $_GET["eq"] == 1
+) {
+    actualizar();
+    exit;
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,10 +52,10 @@
 	<nav class="navbar navbar-dark fixed-top" >
         <div class="container-fluid" id="menu-container">
             <?php 	include 'menu.php';
-					include 'funciones1.php'; 
-						if($_SERVER["REQUEST_METHOD"] == "POST" ){
+					//include 'funciones1.php'; 
+					/*	if($_SERVER["REQUEST_METHOD"] == "POST" ){
 									 if($_GET["eq"] == 1 ){actualizar();}
-						}
+						}*/
 			?>
         </div>
     </nav>

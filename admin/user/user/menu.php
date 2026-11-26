@@ -1,5 +1,8 @@
 <?php
 		include'settings.php';
+	
+		//echo $directorio;
+		if(	$directorio != "user"){$lev ="../"; } else { $lev = "";} 
 ?>
  <div class="container">
     <nav  class="navbar navbar-expand-lg navbar-dark" >
@@ -15,13 +18,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto nav-pills">
                     <li class="nav-item ">
-                        <a class="nav-link<?php echo isset($active0) ? $active0 : ''; ?>" href="index.php">Mi perfil</a>
+                        <a class="nav-link<?php echo isset($active0) ? $active0 : ''; ?>" href="<?=$lev;?>index.php">Mi perfil</a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link <?php echo isset($active1) ? $active1 : ''; ?>" href="secciones.php">Secciones</a>
+                        <a class="nav-link <?php echo isset($active1) ? $active1 : ''; ?>" href="<?=$lev;?>secciones.php">Secciones</a>
                     </li>
 					<li class="nav-item ">
-                        <a class="nav-link <?php echo isset($active2) ? $active2 : ''; ?>" href="personal.php">Personal</a>
+                        <a class="nav-link <?php echo isset($active2) ? $active2 : ''; ?>" href="<?=$lev;?>personal.php">Personal</a>
                     </li>
               </ul>
                 <ul class="navbar-nav">
@@ -29,7 +32,7 @@
                         <a class="nav-link" href="#">Bienvenid@ <?php $ufunc->UserName(); ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../includes/logout.php">Cerrar Sesión</a>
+                        <a class="nav-link" href="<?=$lev;?>../../includes/logout.php">Cerrar Sesión</a>
                     </li>
                 </ul>
             </div>

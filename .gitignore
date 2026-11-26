@@ -9,6 +9,7 @@ portada_prueba_actualizada.php
 /wp-content/
 includes/conexion.php
 admin/includes/connect.php
+admin/user/user/olds/
 .env
 .env.*
 

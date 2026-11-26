@@ -1,7 +1,7 @@
 <?php
 class Login {
 	public function LoginSystem() {
-		session_start(); // Starting Session
+		//session_start(); // Starting Session
 		$error = ''; // Variable To Store Error Message
 		if (!isset($_POST['submit'])) {
 			if (empty($_POST['login']) || empty($_POST['password'])) {
@@ -23,11 +23,11 @@ class Login {
 			$stmt->bind_result($username, $guardada);
 			$stmt->store_result();
 			if($stmt->fetch()) { //fetching the contents of the row
-				session_start(); // Starting Session
+				//session_start(); // Starting Session
 				$_SESSION['login'] = $username; // Initializing Session
 				if (password_verify($password, $guardada)) {	
 					"Guardada: <br>".$guardada;
-					session_start(); // Starting Session
+				//	session_start(); // Starting Session
 					$_SESSION['login'] = $username; // Initializing Session
 					$_SESSION['password'] = $password; // Initializing Session
 				} else {
@@ -49,7 +49,10 @@ class Login {
 	}
 	public function SessionCheck() {
 		global $conn;
-		session_start();// Starting Session
+		if (!isset($_SESSION['login'])) {
+    return;
+}
+		//session_start();// Starting Session
 		// Storing Session
 		$user_check = $_SESSION['login'];
 		// SQL Query To Fetch Complete Information Of User
@@ -80,10 +83,12 @@ class Login {
 		if ($_SESSION["role"] === intval(0)) {
 			//  header("Location:../user/superuser/");
 				header("Location: ../user/user/index.php?response=" . urlencode(json_encode(["status" => "success", "message" => "Bienvenido"])));
+				exit;
 		}
 		//if user role is 0, redirect to user page
 		if ($_SESSION["role"] == 1) {
 			header("Location: ../user/admin/index.php?response=" . urlencode(json_encode(["status" => "success", "message" => "Bienvenido"])));
+			exit;
 
 		}
 	
