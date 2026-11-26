@@ -46,7 +46,7 @@
 		</button>
 		<div class="collapse" id="crearPPA">
 			<div class="card card-body">
-				<form id="registroForm" class="row g-3" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']."?eq=3"); ?>">
+				<form id="registroForm" class="row g-3" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']."?ok=3"); ?>">
 				<input type="text" class="form-control" name="tipo_personal" value="1" readonly hidden>
 					<div class="input-group mb-3">
 						<span class="input-group-text">Nombre(s) Apellidos</span>
@@ -59,25 +59,25 @@
 						<span class="input-group-text" id="basic-addon1">Correo/usuario @</span>
 						<input type="email" class="form-control" placeholder="user@server.com" aria-label="Username"
 						aria-describedby="basic-addon1" name="correo" 
-						pattern="[a-zA-Z0-9._%+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+						pattern="[a-zA-Z0-9._%+]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" >
 						<div class="invalid-feedback">Ingrese un correo válido.</div>
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text" id="basic-addon1">Tel&eacute;fono:</span>
 						<input type="telefono" class="form-control" placeholder="5512344567" aria-label="telefono"
 						aria-describedby="basic-addon1" name="telefono"
-						required>										
+						>										
 					</div>
 					<div class="input-group mb-3">
 						<span class="input-group-text" id="basic-addon1">Extensi&oacute;n:</span>
 						<input type="telefono" class="form-control" placeholder="01234" aria-label="telefono"
 						aria-describedby="basic-addon1" name="extension"
-						required>										
+						>										
 					</div>
 					<!-- Grado académico -->
 					<div class="col-12">
 						<label for="grado" class="form-label">Grado académico</label>
-						<select name="grado" id="grado" class="form-select" required>
+						<select name="grado" id="grado" class="form-select" >
 							<option value="">Seleccione un grado académico</option>
 							<option value="Licenciatura">Licenciatura</option>
 							<option value="Maestría">Maestría</option>

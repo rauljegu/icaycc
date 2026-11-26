@@ -67,6 +67,11 @@
 								desactivar();
 								//echo "Desactivado";
 							}
+							if($_GET["ok"] == 3 ){
+								
+								insertar_ac();
+								//echo "Desactivado";
+							}
 						}
 			?>
         </div>
