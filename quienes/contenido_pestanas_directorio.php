@@ -194,7 +194,12 @@ unset($grupoGrupoAdmin);
                                                     onerror="this.onerror=null;this.src='<?= BASE_URL ?>assets/img/avatar.png';"
                                                 >
                                                 <div class="flex-grow-1 min-w-0">
+                                                   
+													  <a
+														href="../investigadores/perfil.php?id=<?= directorioE($persona['id_personal']);?>"
+														class="text-decoration-none">
                                                     <div class="fw-semibold"><?= directorioE($persona['nombre']); ?></div>
+													</a>
                                                     <?php if (!empty($persona['es_responsable'])): ?>
                                                         <span class="badge text-bg-success mb-1">Responsable</span>
                                                     <?php endif; ?>
