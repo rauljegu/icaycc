@@ -256,7 +256,7 @@ $sqlAdministrativoSecretarias = "
     INNER JOIN personal p
         ON p.id_personal = ps.id_personal
     INNER JOIN secretarias s
-        ON s.id_secretarias = ps.id_secreatarias
+        ON s.id_secretarias = ps.id_secretarias
     LEFT JOIN organigrama o
         ON o.id_organigrama = s.id_organigrama
     LEFT JOIN subareas sa

@@ -242,6 +242,286 @@ if (!function_exists('insertar_ac')) {
     }
 }
 
+if (!function_exists('insertar_ad')) {
+    function insertar_ad(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            mostrarNotificacion('Solicitud no válida.');
+            return;
+        }
+
+        // Datos del personal
+        $campos = [
+			'nombre' => mb_strtoupper(limpiar(
+								($_POST['paterno'] ?? '') . ' ' .
+								($_POST['materno'] ?? '') . ' ' .
+								($_POST['name'] ?? '')
+							), 'UTF-8'),
+            'nombres' => limpiar($_POST['name'] ?? ''),
+            'apellido_paterno' => limpiar($_POST['paterno'] ?? ''), 
+            'apellido_materno' => limpiar($_POST['materno'] ?? ''),
+            'correo' => limpiar($_POST['correo'] ?? ''),
+            'extension' => limpiar($_POST['extension'] ?? ''),
+            'telefono' => limpiar($_POST['telefono'] ?? ''),
+            'grado_academico' => limpiar($_POST['grado'] ?? ''),
+            'cargo' => (int)($_POST['cargo'] ?? 0),
+            'id_tipo_personal' => (int)($_POST['tipo_personal'] ?? 0)
+        ];
+
+        // Validaciones
+        if (
+            $campos['nombres'] === '' ||
+            $campos['apellido_paterno'] === '' ||
+            $campos['correo'] === ''
+        ) {
+            mostrarNotificacion('Nombre, apellido paterno y correo son obligatorios.');
+            return;
+        }
+
+        if (!filter_var($campos['correo'], FILTER_VALIDATE_EMAIL)) {
+            mostrarNotificacion('El correo electrónico no tiene un formato válido.');
+            return;
+        }
+
+        if ($campos['id_tipo_personal'] !== 2) {
+            mostrarNotificacion('Tipo de personal no válido.');
+            return;
+        }
+
+        $conn = null;
+
+        try {
+            $conn = obtenerConexionPersonal();
+            $conn->begin_transaction();
+
+            // 1. Insertar datos personales
+            $columnas = array_keys($campos);
+            $marcadores = implode(', ', array_fill(0, count($columnas), '?'));
+
+            $sql = 'INSERT INTO personal (`' .
+                implode('`, `', $columnas) .
+                '`) VALUES (' . $marcadores . ')';
+
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new RuntimeException($conn->error);
+            }
+
+            $valores = array_values($campos);
+            $tipos = str_repeat('s', count($valores));
+
+            $referencias = [];
+
+            foreach ($valores as $indice => &$valor) {
+                $referencias[$indice] = &$valor;
+            }
+
+            unset($valor);
+
+            call_user_func_array(
+                [$stmt, 'bind_param'],
+                array_merge([$tipos], $referencias)
+            );
+
+            if (!$stmt->execute()) {
+                throw new RuntimeException($stmt->error);
+            }
+
+            // Recuperar el ID del nuevo registro
+            $id = $conn->insert_id;
+
+            $stmt->close();
+
+    
+
+         
+
+            // 5. Confirmar transacción
+            $conn->commit();
+
+            mostrarNotificacion(
+                'Personal académico registrado correctamente.',
+                'success',
+                1800,
+                true
+            );
+
+        } catch (Throwable $e) {
+
+            if ($conn instanceof mysqli) {
+                $conn->rollback();
+                error_log(
+                    'Error al insertar personal académico: ' .
+                    $e->getMessage()
+                );
+            }
+
+            mostrarNotificacion(
+                'No fue posible registrar al personal. Revisa el registro de errores.'
+            );
+        }
+    }
+}
+
+if (!function_exists('insertar_ins')) {
+    function insertar_ins(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            mostrarNotificacion('Solicitud no válida.');
+            return;
+        }
+
+        // Datos del personal
+        $campos = [
+			'nombre' => mb_strtoupper(limpiar(
+								($_POST['paterno'] ?? '') . ' ' .
+								($_POST['materno'] ?? '') . ' ' .
+								($_POST['name'] ?? '')
+							), 'UTF-8'),
+            'nombres' => limpiar($_POST['name'] ?? ''),
+            'apellido_paterno' => limpiar($_POST['paterno'] ?? ''), 
+            'apellido_materno' => limpiar($_POST['materno'] ?? ''),
+            'correo' => limpiar($_POST['correo'] ?? ''),
+            'extension' => limpiar($_POST['extension'] ?? ''),
+            'telefono' => limpiar($_POST['telefono'] ?? ''),
+            'grado_academico' => limpiar($_POST['grado'] ?? ''),
+            'cargo' => (int)($_POST['cargo'] ?? 0),
+            'id_tipo_personal' => (int)($_POST['tipo_personal'] ?? 0)
+        ];
+
+        // Validaciones
+        if (
+            $campos['nombres'] === '' ||
+            $campos['apellido_paterno'] === '' ||
+            $campos['correo'] === ''
+        ) {
+            mostrarNotificacion('Nombre, apellido paterno y correo son obligatorios.');
+            return;
+        }
+
+        if (!filter_var($campos['correo'], FILTER_VALIDATE_EMAIL)) {
+            mostrarNotificacion('El correo electrónico no tiene un formato válido.');
+            return;
+        }
+
+        if ($campos['id_tipo_personal'] !== 3) {
+            mostrarNotificacion('Tipo de personal no válido.');
+            return;
+        }
+
+        $conn = null;
+
+        try {
+            $conn = obtenerConexionPersonal();
+            $conn->begin_transaction();
+
+            // 1. Insertar datos personales
+            $columnas = array_keys($campos);
+            $marcadores = implode(', ', array_fill(0, count($columnas), '?'));
+
+            $sql = 'INSERT INTO personal (`' .
+                implode('`, `', $columnas) .
+                '`) VALUES (' . $marcadores . ')';
+
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new RuntimeException($conn->error);
+            }
+
+            $valores = array_values($campos);
+            $tipos = str_repeat('s', count($valores));
+
+            $referencias = [];
+
+            foreach ($valores as $indice => &$valor) {
+                $referencias[$indice] = &$valor;
+            }
+
+            unset($valor);
+
+            call_user_func_array(
+                [$stmt, 'bind_param'],
+                array_merge([$tipos], $referencias)
+            );
+
+            if (!$stmt->execute()) {
+                throw new RuntimeException($stmt->error);
+            }
+
+            // Recuperar el ID del nuevo registro
+            $id = $conn->insert_id;
+
+            $stmt->close();
+
+            // 2. Insertar secretarias
+            $dep = (int)($_POST['secretarias'] ?? 0);
+			$rol = "responsable";
+
+            if ($dep > 0) {
+                $stmt = $conn->prepare(
+                    'INSERT INTO personal_secretarias
+                    (id_personal, id_secretarias,rol)
+                    VALUES (?, ?, ?)'
+                );
+
+                $stmt->bind_param('iis', $id, $dep, $rol);
+
+                if (!$stmt->execute()) {
+                    throw new RuntimeException($stmt->error);
+                }
+
+                $stmt->close();
+            }
+
+
+            // 4. Insertar unidad de apoyo
+            $unidad = (int)($_POST['unidades'] ?? 0);
+			$rolu = "responsable";
+            if ($unidad > 0) {
+                $stmt = $conn->prepare(
+                    'INSERT INTO personal_unidades
+                    (id_personal, id_unidades,rol)
+                    VALUES (?, ?, ?)'
+                );
+
+                $stmt->bind_param('iis', $id, $unidad, $rolu);
+
+                if (!$stmt->execute()) {
+                    throw new RuntimeException($stmt->error);
+                }
+
+                $stmt->close();
+            }
+
+            // 5. Confirmar transacción
+            $conn->commit();
+
+            mostrarNotificacion(
+                'Personal académico registrado correctamente.',
+                'success',
+                1800,
+                true
+            );
+
+        } catch (Throwable $e) {
+
+            if ($conn instanceof mysqli) {
+                $conn->rollback();
+                error_log(
+                    'Error al insertar personal académico: ' .
+                    $e->getMessage()
+                );
+            }
+
+            mostrarNotificacion(
+                'No fue posible registrar al personal. Revisa el registro de errores.'
+            );
+        }
+    }
+}
+
 
 if (!function_exists('actualizar')) {
     function actualizar(): void
@@ -475,6 +755,7 @@ if (!function_exists('actualizar_ad')) {
         }
     }
 }
+
 if (!function_exists('actualizar_inst')) {
     function actualizar_inst(): void
     {

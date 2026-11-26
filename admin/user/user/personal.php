@@ -72,6 +72,16 @@
 								insertar_ac();
 								//echo "Desactivado";
 							}
+							if($_GET["ok"] == 4 ){
+								
+								insertar_ad();
+								//echo "admin";
+							}
+							if($_GET["ok"] == 5 ){
+								
+								insertar_ins();
+								//echo "institucional";
+							}
 						}
 			?>
         </div>

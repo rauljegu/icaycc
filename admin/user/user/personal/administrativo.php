@@ -54,7 +54,7 @@
 								<div class="card card-body">
 								
 
-						<form id="registroForm" class="row g-3" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']."?eq=4"); ?>">
+						<form id="registroForm" class="row g-3" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']."?ok=4"); ?>">
 									<input type="text" class="form-control" name="tipo_personal" value="2" readonly hidden>
 								
 								    <div class="input-group mb-3">
@@ -89,7 +89,7 @@
 									<!-- Grado académico -->
 									<div class="col-12">
 										<label for="grado" class="form-label">Grado académico</label>
-										<select name="grado" id="grado" class="form-select" required>
+										<select name="grado" id="grado" class="form-select" >
 											<option value="Sin estudios profesionales">Seleccione un grado académico</option>
 											<option value="Licenciatura">
 												Licenciatura
@@ -112,7 +112,7 @@
 						<select name="cargo" id="cargos" class="form-select" required>
 							<option value="3" selected>Seleccione un cargo</option>
 							<?php
-								$cargo="SELECT id_cargo, nombre FROM cargos WHERE activo =1";
+								$cargo="SELECT id_cargo, nombre FROM cargos WHERE activo =1 ORDER BY nombre ASC";
 								include '../../includes/connect.php';
 								$connect = $conn;
 								//echo $sql6;

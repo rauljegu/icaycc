@@ -195,7 +195,10 @@
 											
 											<?php 	 
 													$sqlsec="SELECT id_secretarias, nombre FROM secretarias  WHERE responsable
-												IN (SELECT id_personal FROM personal_secretarias WHERE id_personal = $id)";
+												IN (SELECT id_personal FROM personal_secretarias WHERE id_personal = $id)
+												  OR id_secretarias 
+												IN (SELECT id_secretarias FROM personal_secretarias WHERE id_personal = $id)
+												";
 													include '../../../includes/connect.php';
 													$connect = $conn;
 													
@@ -211,7 +214,10 @@
 													} 
 									 
 													$sqlsec1="SELECT id_secretarias, nombre FROM secretarias  WHERE responsable
-												NOT IN (SELECT id_personal FROM personal_secretarias WHERE id_personal = $id) ORDER BY nombre ASC";
+												NOT IN (SELECT id_personal FROM personal_secretarias WHERE id_personal = $id) 
+												OR id_secretarias 
+												NOT IN (SELECT id_secretarias FROM personal_secretarias WHERE id_personal = $id)
+												ORDER BY nombre ASC";
 													include '../../../includes/connect.php';
 													$connect = $conn;
 													
