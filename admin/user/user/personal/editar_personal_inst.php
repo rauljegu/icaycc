@@ -35,7 +35,7 @@
 					include '../funciones1.php'; 
 						if($_SERVER["REQUEST_METHOD"] == "POST" ){
 									 if($_GET["eq"] == 1 ){//actualizar_ad();
-										echo "aqui se llama la funcion actualizar_ad";
+										echo "aqui se llama la funcion actualizar_inst";
 									 }
 						}
 			?>

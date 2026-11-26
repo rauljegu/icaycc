@@ -15,7 +15,7 @@ if (!isset($_SESSION['login'])) {
 
 // Nombre del archivo actual
 $name = basename($_SERVER["PHP_SELF"]);
-
+$directorio = basename(__DIR__);
 // Cargar funciones de actualización
 require_once 'funciones1.php';
 
