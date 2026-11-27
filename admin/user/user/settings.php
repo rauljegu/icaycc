@@ -52,4 +52,10 @@ switch ($name) {
         $name = basename($_SERVER['PHP_SELF'] ?? 'personal.php');
         include __DIR__ . '/activo.php';
         break;
+	
+	case 'adscripciones.php':
+        $menu = 3;
+        $name = basename($_SERVER['PHP_SELF'] ?? 'personal.php');
+        include __DIR__ . '/activo.php';
+        break;
 }

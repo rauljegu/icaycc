@@ -24,6 +24,9 @@ if (!function_exists('mostrarNotificacion')) {
 		? 'const url = new URL(window.location.href);
 		   url.searchParams.delete("eq");
 		   url.searchParams.delete("ok");
+		   url.searchParams.delete("area");
+		   url.searchParams.delete("sa");
+		   url.searchParams.delete("tp");
 		   window.location.href = url.toString();'
 		: '';
         echo '<script>
@@ -56,7 +59,7 @@ if (!function_exists('obtenerConexionPersonal')) {
         return $conn;
     }
 }
-
+/**FUNCIONES PARA CREAR O ACTUALIZAR PERSONAL**/
 
 if (!function_exists('insertar_ac')) {
     function insertar_ac(): void
@@ -522,7 +525,6 @@ if (!function_exists('insertar_ins')) {
     }
 }
 
-
 if (!function_exists('actualizar')) {
     function actualizar(): void
     {
@@ -859,6 +861,258 @@ if (!function_exists('actualizar_inst')) {
     }
 }
 
+/****FUNCIONES PARA ASIGNAR PERSONAL A LAS AREAS*/
+
+if (!function_exists('agregar_personal_adscripcion')) {
+    function agregar_personal_adscripcion(
+        string $tipo,
+        int $id_destino,
+        array $personal,
+        string $rol = 'integrante',
+        int $tipo_personal = 0
+    ): void {
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            mostrarNotificacion('Solicitud no válida.');
+            return;
+        }
+
+        // Configuración de las relaciones permitidas
+        $relaciones = [
+
+            'secretaria' => [
+                'tabla' => 'personal_secretarias',
+                'campo_personal' => 'id_personal',
+                'campo_destino' => 'id_secretarias',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'colaborador',
+                    'administrativo'
+                ]
+            ],
+
+            'unidad' => [
+                'tabla' => 'personal_unidades',
+                'campo_personal' => 'id_personal',
+                'campo_destino' => 'id_unidades',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'administrativo'
+                ]
+            ],
+
+            'grupo' => [
+                'tabla' => 'investigador_grupo',
+                'campo_personal' => 'id_investigador',
+                'campo_destino' => 'id_grupo',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'administrativo'
+                ]
+            ],
+
+            'departamento' => [
+                'tabla' => 'investigador_departamento',
+                'campo_personal' => 'id_investigador',
+                'campo_destino' => 'id_departamento',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'administrativo'
+                ]
+            ],
+
+            'direccion' => [
+                'tabla' => 'personal_direccion',
+                'campo_personal' => 'id_personal',
+                'campo_destino' => 'id_organigrama',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'colaborador',
+                    'administrativo'
+                ]
+            ],
+
+            'laboratorio' => [
+                'tabla' => 'investigador_laboratorio',
+                'campo_personal' => 'id_investigador',
+                'campo_destino' => 'id_laboratorio',
+                'campo_rol' => 'rol',
+                'roles' => [
+                    'responsable',
+                    'integrante',
+                    'colaborador'
+                ]
+            ]
+        ];
+
+        // Validar tipo de relación
+        if (!isset($relaciones[$tipo])) {
+            mostrarNotificacion('Tipo de adscripción no válido.');
+            return;
+        }
+
+        if ($id_destino <= 0) {
+            mostrarNotificacion('El destino de la adscripción no es válido.');
+            return;
+        }
+
+        // Validar rol cuando la tabla lo utiliza
+        $config = $relaciones[$tipo];
+
+        if (
+            $config['campo_rol'] !== null &&
+            !in_array($rol, $config['roles'], true)
+        ) {
+            mostrarNotificacion('El rol seleccionado no es válido.');
+            return;
+        }
+
+        // Limpiar identificadores
+        $personal = array_unique(
+            array_filter(
+                array_map('intval', $personal),
+                fn($id) => $id > 0
+            )
+        );
+
+        if (empty($personal)) {
+            mostrarNotificacion('Debes seleccionar al menos un integrante.');
+            return;
+        }
+
+        $conn = null;
+
+        try {
+
+            $conn = obtenerConexionPersonal();
+            $conn->begin_transaction();
+
+            $tabla = $config['tabla'];
+            $campoPersonal = $config['campo_personal'];
+            $campoDestino = $config['campo_destino'];
+            $campoRol = $config['campo_rol'];
+
+            // Construir consulta según la relación
+            if ($campoRol !== null) {
+
+                $sql = "INSERT INTO `$tabla`
+                        (`$campoPersonal`, `$campoDestino`, `$campoRol`)
+                        SELECT ?, ?, ?
+                        FROM personal p
+                        WHERE p.id_personal = ?
+                        AND (? = 0 OR p.id_tipo_personal = ?)
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM `$tabla` t
+                            WHERE t.`$campoPersonal` = p.id_personal
+                            AND t.`$campoDestino` = ?
+                        )";
+
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    throw new RuntimeException($conn->error);
+                }
+
+            } else {
+
+                $sql = "INSERT INTO `$tabla`
+                        (`$campoPersonal`, `$campoDestino`)
+                        SELECT ?, ?
+                        FROM personal p
+                        WHERE p.id_personal = ?
+                        AND (? = 0 OR p.id_tipo_personal = ?)
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM `$tabla` t
+                            WHERE t.`$campoPersonal` = p.id_personal
+                            AND t.`$campoDestino` = ?
+                        )";
+
+                $stmt = $conn->prepare($sql);
+
+                if (!$stmt) {
+                    throw new RuntimeException($conn->error);
+                }
+            }
+
+            $agregados = 0;
+
+            foreach ($personal as $id) {
+
+                if ($campoRol !== null) {
+
+                    $stmt->bind_param(
+                        'iisiiii',
+                        $id,
+                        $id_destino,
+                        $rol,
+                        $id,
+                        $tipo_personal,
+                        $tipo_personal,
+                        $id_destino
+                    );
+
+                } else {
+
+                    $stmt->bind_param(
+                        'iiiiii',
+                        $id,
+                        $id_destino,
+                        $id,
+                        $tipo_personal,
+                        $tipo_personal,
+                        $id_destino
+                    );
+                }
+
+                if (!$stmt->execute()) {
+                    throw new RuntimeException($stmt->error);
+                }
+
+                $agregados += $stmt->affected_rows;
+            }
+
+            $stmt->close();
+
+            $conn->commit();
+
+            mostrarNotificacion(
+                $agregados . ' registro(s) agregado(s) correctamente.',
+                'success',
+                2000,
+                true
+            );
+
+        } catch (Throwable $e) {
+
+            if ($conn instanceof mysqli) {
+                $conn->rollback();
+            }
+
+            error_log(
+                'Error al agregar adscripción de personal: ' .
+                $e->getMessage()
+            );
+
+            mostrarNotificacion(
+                'No fue posible completar las adscripciones. Revisa el registro de errores.'
+            );
+        }
+    }
+}
+
+/****FUNCIONES PARA ACTIVAR O DESACTYIVAR PERSONAL*/
 if (!function_exists('cambiarEstadoPersonal')) {
     function cambiarEstadoPersonal(int $estado): void
     {
@@ -906,3 +1160,118 @@ if (!function_exists('desactivar')) {
         cambiarEstadoPersonal(0);
     }
 }
+
+/**** FUNCIONES PARA ELIMINAR ADSCRIPCIONES DE PERSONAL ****/
+
+if (!function_exists('eliminarAdscripcionPersonal')) {
+
+    function eliminarAdscripcionPersonal(string $tipo): void
+    {
+        // Recuperar el ID de la adscripción
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+        if (!$id || $id <= 0) {
+            mostrarNotificacion('Identificador de adscripción no válido.');
+            return;
+        }
+
+        // Tablas y llaves primarias permitidas
+        $relaciones = [
+
+            'secretaria' => [
+                'tabla' => 'personal_secretarias',
+                'pk' => 'id_personal_secretarias'
+            ],
+
+            'unidad' => [
+                'tabla' => 'personal_unidades',
+                'pk' => 'id'
+            ],
+
+            'grupo' => [
+                'tabla' => 'investigador_grupo',
+                'pk' => 'id'
+            ],
+
+            'departamento' => [
+                'tabla' => 'investigador_departamento',
+                'pk' => 'id'
+            ],
+
+            'direccion' => [
+                'tabla' => 'personal_direccion',
+                'pk' => 'id_direccion'
+            ],
+
+            'laboratorio' => [
+                'tabla' => 'investigador_laboratorio',
+                'pk' => 'id'
+            ]
+        ];
+
+        // Validar tipo de adscripción
+        if (!isset($relaciones[$tipo])) {
+            mostrarNotificacion('Tipo de adscripción no válido.');
+            return;
+        }
+
+        $tabla = $relaciones[$tipo]['tabla'];
+        $pk = $relaciones[$tipo]['pk'];
+
+        try {
+
+            $conn = obtenerConexionPersonal();
+
+            // Eliminar exclusivamente la relación seleccionada
+            $sql = "DELETE FROM `$tabla`
+                    WHERE `$pk` = ?
+                    LIMIT 1";
+
+            $stmt = $conn->prepare($sql);
+
+            if (!$stmt) {
+                throw new RuntimeException($conn->error);
+            }
+
+            $stmt->bind_param('i', $id);
+
+            if (!$stmt->execute()) {
+                throw new RuntimeException($stmt->error);
+            }
+
+            $eliminados = $stmt->affected_rows;
+
+            $stmt->close();
+
+            if ($eliminados === 0) {
+                mostrarNotificacion(
+                    'La adscripción no existe o ya fue eliminada.',
+                    'info',
+                    1800,
+                    true
+                );
+                return;
+            }
+
+            mostrarNotificacion(
+                'Adscripción eliminada correctamente.',
+                'success',
+                1800,
+                true
+            );
+
+        } catch (Throwable $e) {
+
+            error_log(
+                'Error al eliminar adscripción de personal: ' .
+                $e->getMessage()
+            );
+
+            mostrarNotificacion(
+                'No fue posible eliminar la adscripción. Revisa el registro de errores.'
+            );
+        }
+    }
+}
+
+

@@ -63,7 +63,7 @@ foreach ($administrativoSecretarias as $persona) {
 $administrativoUnidadesAgrupado = [];
 foreach ($administrativoUnidades as $persona) {
     $key = $persona['id_unidades'];
-    $subtipo = $persona['subtipo_area'] ?: 'Sin subtipo especificado';
+    $subtipo = $persona['subtipo_area'] ?: '';
     $administrativoUnidadesAgrupado[$key]['area'] = $persona['area'];
     $administrativoUnidadesAgrupado[$key]['nombre'] = $persona['unidad'];
     $administrativoUnidadesAgrupado[$key]['tipo'] = $persona['tipo_unidad'];
@@ -339,22 +339,42 @@ unset($grupoGrupoAdmin);
                         </h2>
                         <div id="collapseAdminSecretaria<?= $iSecretaria; ?>" class="accordion-collapse collapse" aria-labelledby="headingAdminSecretaria<?= $iSecretaria; ?>" data-bs-parent="#accordionAdministrativo">
                             <div class="accordion-body">
-                                <div class="small text-muted mb-3"><?= directorioE($secretaria['area']); ?></div>
+                              
                                 <?php foreach ($secretaria['subtipos'] as $subtipo => $datosSubtipo): ?>
-                                    <h5 class="h6 text-success mt-3"><?= directorioE($subtipo); ?></h5>
+                                    <h5 class="h6 text-success mt-3"><?php if (directorioE($subtipo) !== 'Sin subtipo especificado'){ directorioE($subtipo); } else {  } ?></h5>
+
                                     <?php foreach ($datosSubtipo['cargos'] as $nombreCargo => $personasCargo): ?>
-                                        <?php $etiquetaCargo = directorioEtiquetaCargoSecretaria($nombreCargo, $subtipo); ?>
-                                        <h6 class="text-success mt-3"><?= directorioE($etiquetaCargo); ?></h6>
-                                        <div class="row g-3">
-                                            <?php foreach ($personasCargo as $persona): ?>
-                                                <div class="col-12 col-lg-6">
-                                                    <div class="border rounded p-3 h-100">
-                                                        <div><?= directorioE($persona['nombre']); ?></div>
-                                                        <?php directorioContacto($persona); ?>
+                                        <?php
+                                        // Agrupar por departamento dentro de cada cargo.
+                                        // Así se conserva exactamente el orden de cargos
+                                        // definido previamente por directorioAgruparPorCargoSecretaria().
+                                        $personasPorDepartamento = [];
+
+                                        foreach ($personasCargo as $persona) {
+                                            $nombreDepartamento = trim($persona['departamento_secretaria'] ?? '');
+                                            $personasPorDepartamento[$nombreDepartamento][] = $persona;
+                                        }
+
+                                        $etiquetaCargo = directorioEtiquetaCargoSecretaria($nombreCargo, $subtipo);
+                                        ?>
+
+                                        <?php foreach ($personasPorDepartamento as $nombreDepartamento => $personasDepartamento): ?>
+                                            <?php if ($nombreDepartamento !== ''): ?>
+                                                <div class="fw-semibold mb-2 ms-2">Departamento de <?= directorioE($nombreDepartamento); ?></div>
+                                            <?php endif; ?>
+
+                                            <h6 class="text-success mt-3"><?= directorioE($etiquetaCargo); ?><?php if ($nombreDepartamento !== ''): ?> de <?php endif; ?><?= directorioE($nombreDepartamento); ?></h6>
+                                            <div class="row g-3">
+                                                <?php foreach ($personasDepartamento as $persona): ?>
+                                                    <div class="col-12 col-lg-6">
+                                                        <div class="border rounded p-3 h-100">
+                                                            <div><?= directorioE($persona['nombre']); ?></div>
+                                                            <?php directorioContacto($persona); ?>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        <?php endforeach; ?>
                                     <?php endforeach; ?>
                                 <?php endforeach; ?>
                             </div>
@@ -437,7 +457,7 @@ unset($grupoGrupoAdmin);
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingAdminUnidades">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdminUnidades" aria-expanded="false" aria-controls="collapseAdminUnidades">
-                        Unidades
+                        Unidades de Apoyo
                     </button>
                 </h2>
                 <div id="collapseAdminUnidades" class="accordion-collapse collapse" aria-labelledby="headingAdminUnidades" data-bs-parent="#accordionAdministrativo">
@@ -451,12 +471,12 @@ unset($grupoGrupoAdmin);
                                         <h3 class="accordion-header" id="headingAdminUnidad<?= $iUnidadAdmin; ?>">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdminUnidad<?= $iUnidadAdmin; ?>" aria-expanded="false" aria-controls="collapseAdminUnidad<?= $iUnidadAdmin; ?>">
                                                 <?= directorioE($unidad['nombre']); ?>
-                                                <?php if (!empty($unidad['tipo'])): ?><span class="small text-muted ms-2">(<?= directorioE($unidad['tipo']); ?>)</span><?php endif; ?>
+                                                
                                             </button>
                                         </h3>
                                         <div id="collapseAdminUnidad<?= $iUnidadAdmin; ?>" class="accordion-collapse collapse" aria-labelledby="headingAdminUnidad<?= $iUnidadAdmin; ?>" data-bs-parent="#accordionAdminUnidadesInterno">
                                             <div class="accordion-body">
-                                                <div class="small text-muted mb-3"><?= directorioE($unidad['area']); ?></div>
+                                           
                                                 <?php foreach ($unidad['subtipos'] as $subtipo => $personas): ?>
                                                     <h5 class="h6 text-success mt-3"><?= directorioE($subtipo); ?></h5>
                                                     <?php foreach ($personas as $nombreCargo => $personasCargo): ?>

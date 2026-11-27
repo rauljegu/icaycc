@@ -10,7 +10,6 @@
         <div class="container-fluid">
 			<h2 style="color:#fff">ICAyCC</h2>
 			<p>    </p>
-            <!--<a class="navbar-brand" href="#">Gaceta SD</a>-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -25,6 +24,9 @@
                     </li>
 					<li class="nav-item ">
                         <a class="nav-link <?php echo isset($active2) ? $active2 : ''; ?>" href="<?=$lev;?>personal.php">Personal</a>
+                    </li>
+					<li class="nav-item ">
+                        <a class="nav-link <?php echo isset($active3) ? $active3 : ''; ?>" href="<?=$lev;?>adscripciones.php">Adscripciones</a>
                     </li>
               </ul>
                 <ul class="navbar-nav">
